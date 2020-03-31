@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XML-Test Count_Parameters="4">
+    <Question>Answer</Question>
+    <A>926</A>
+    <B>SELECT * FROM [Main_Table]</B>
+    <C>C:\Users\Ibrag\Desktop\C#\Lab Works\Programms\lab11\XML-Test.xml</C>
+    <Names>
+        <Name Type="Male">John</Name>
+        <Name Type="Male">Teo</Name>
+        <Name Type="Famale">Miana</Name>
+    </Names>
+</XML-Test>
