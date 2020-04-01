@@ -50,7 +50,7 @@ namespace Life0
         MealsConfig mealsConf = new MealsConfig(100, 10, 100);
         int kidsRadiusMin = 30;  // Distance from first parent when Entity born
         int kidsRadiusMax = 100;
-        int entityesLimits = 3000; // Entytyes can't spawn if it's count > than this limit
+        int entityesLimits = 1000; // Entytyes can't spawn if it's count > than this limit
         int stepLenght = 5;
         
         public Game(PictureBox field, Size entitySize)
@@ -93,7 +93,7 @@ namespace Life0
                 foreach (var e in entityes)
                 {
                     // CHOOSE STRATEGY HERE
-                    var step = mindNearest(e.getPos());
+                    var step = mindNearestPartner(e);
                     e.makeStep(step);
                     // Add only alive antityes
                     if (e.getState() == LifeState.alive)
@@ -189,6 +189,7 @@ namespace Life0
         // Update list of meals
         void updateMeals()
         {
+            
             Point p;
             meals.Clear();
             int countFood = random.Next(mealsConf.countLimitDown, mealsConf.countLimitUp);
@@ -197,59 +198,122 @@ namespace Life0
                 p = new Point(random.Next(entitySize.Width, width - entitySize.Width), random.Next(entitySize.Height, height - entitySize.Height));
                 meals.Add(p);
             }
+
         }
 
         // Mind algorithms
+        bool XOR(bool a, bool b)
+        {
+            return a && !b || !a && b;
+        }
+        // Chaotic movements
         int mindRandom()
         {
             return random.Next(4);
         }
-        int mindNearest(Point pos)
+
+        int mindNearestPartner(Entity entity)
+        {
+            var pos = entity.getPos();
+            var gen = entity.getGender();
+            var target = entity.getTargetPartner();
+            bool partnerExist = true;
+            // If target isn't alive
+            // Got nearest
+            if (target == null || !entityes.Contains(target))
+            {
+                // Get fisrt entity
+                partnerExist = false;
+                target = entityes[0];
+                int dst = distance(pos, target.getPos());
+                foreach(var e in entityes)
+                    if ( e.getGender() != gen)
+                    {
+                        partnerExist = true;
+                        // if first target have same gender
+                        if ( XOR(target.getGender() == gen, distance(pos, e.getPos()) < dst) )
+                        {
+                            dst = distance(pos, e.getPos());
+                            target = e;                        
+                        }                  
+                    }
+
+                entity.setTargetPartner(target);
+            }
+            if (!partnerExist)
+                return mindRandom();
+
+            return moveToTarget(pos, target.getPos());
+        }
+
+        // Go to nearest meal
+        int mindNearestMeal(Entity entity)
         {
             if ( meals.Count != 0)
             {
-                // Get nearest meal
-                Point target = meals[0];
-                int dst = distance(pos,target);
-                foreach (var m in meals)
+                var pos = entity.getPos();
+                var target = entity.getTargetMeal(); 
+                // if Entity has't target
+                if (target == null || ! meals.Contains(target))
                 {
-                    var locDist = distance(m, pos);
-                    if (locDist < dst)
+                    // Get nearest meal
+                    target = meals[0];
+                    int dst = distance(pos, target);
+                    foreach (var m in meals)
                     {
-                        target = m;
-                        dst = locDist; 
+                        var locDist = distance(m, pos);
+                        if (locDist < dst)
+                        {
+                            target = m;
+                            dst = locDist;
+                        }
                     }
+                    entity.setTargetMeal(target);
                 }
-                    
 
-                // Move to them
-                var deltaX = target.X - pos.X;
-                var deltaY = target.Y - pos.Y;
-
-                if (deltaX < 0 && deltaY < 0) // Second period
-                    if (-deltaX < -deltaY)
-                        return 1;// Turn Up
-                    else
-                        return 2; // Turn Left
-                else if (deltaX < 0 && deltaY > 0) // Third perios
-                    if (-deltaX < deltaY)
-                        return 0; // Trun down
-                    else
-                        return 2; // Turn left
-                else if (deltaX > 0 && deltaY < 0) // Fifth period
-                    if (deltaX < -deltaY)
-                        return 0; // Turn down
-                    else
-                        return 3; // Trun right
-                else                              // First period
-                    if (deltaX < deltaY)
-                        return 1; // Turn up
-                    else
-                        return 3; // Turn right
+                return moveToTarget(pos, target);
+                
             }
 
             return mindRandom();
+        }
 
+        
+
+        int moveToTarget(Point pos,Point target)
+        {
+            // Move to the target
+            var deltaX = target.X - pos.X;
+            var deltaY = target.Y - pos.Y;
+
+            if (deltaX <= 0 && deltaY <= 0) // Second period
+            {
+                if (-deltaX < -deltaY)
+                    return 1;// Turn Up
+                else
+                    return 2; // Turn Left
+            }
+            else if (deltaX <= 0 && deltaY >= 0) // Third perios
+            {
+                if (-deltaX < deltaY)
+                    return 0; // Trun down
+                else
+                    return 2; // Turn left
+            }
+            else if (deltaX >= 0 && deltaY <= 0) // First period
+            {
+                if (deltaX < -deltaY)
+                    return 1; // Turn up
+                else
+                    return 3; // Trun right
+            }
+            else                              // Fourth period
+            {
+                if (deltaX < deltaY)
+                    return 0; // Turn down
+                else
+                    return 3; // Turn right
+            }
         }
         public Size getSize()
         {

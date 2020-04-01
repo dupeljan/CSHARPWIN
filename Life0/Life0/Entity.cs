@@ -33,7 +33,8 @@ namespace Life0
         int direction;                
         Gender gender;             // Entity gender: 0 feamle, 1 male
         Point pos;              // Entity position on the field
-        Point target;           // Target point for Entity ( used for mind algorithms )
+        Point targetMeal;           // Target meal point for Entity ( used for mind algorithms )
+        Entity targetPartner;           // Target partner point for Entity ( used for mind algorithms )
         LifeState state;        // Entity life state
         
 
@@ -98,6 +99,26 @@ namespace Life0
         public int getStepsLeft()
         {
             return stepsLeft;
+        }
+
+        public Point getTargetMeal()
+        {
+            return targetMeal;
+        }
+        
+        public void setTargetMeal(Point target)
+        {
+            this.targetMeal = target;
+        }
+
+        public Entity getTargetPartner()
+        {
+            return targetPartner;
+        }
+
+        public void setTargetPartner(Entity target)
+        {
+            this.targetPartner = target;
         }
     }
 }
