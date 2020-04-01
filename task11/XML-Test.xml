@@ -3,7 +3,7 @@
     <Question>Answer</Question>
     <A>926</A>
     <B>SELECT * FROM [Main_Table]</B>
-    <C>C:\Users\Ibrag\Desktop\C#\Lab Works\Programms\lab11\XML-Test.xml</C>
+    <C>C:\Users\dupel\source\repos\SHARPwin\task11\XML-Test.xml</C>
     <Names>
         <Name Type="Male">John</Name>
         <Name Type="Male">Teo</Name>

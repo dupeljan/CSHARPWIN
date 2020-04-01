@@ -74,13 +74,22 @@ namespace lab11 {
 
         private void LWP10Wallpapper_Load(object sender, EventArgs e) {
             //Path = Directory.GetCurrentDirectory(); // Текущая директория, из которой запущено приложения
-            String_Path = @"C:\Users\Ibrag\Desktop\C#\Lab Works\Programms\lab11\";
+            String_Path = @"C:\Users\dupel\source\repos\SHARPwin\task11";
             // Инициализируем объект StreamReader, считывающий символы из потока байтов в определённой кодировке
-            using (StreamReader SR = new StreamReader(String_Path + @"\Wallpapper-DB.xml", System.Text.Encoding.UTF8)) {
-                WallpapperDataSet = new DataSet();
-                WallpapperDataSet.ReadXml(SR, XmlReadMode.Auto); // Считываем XML-схемуиданныев DataSet
-                WallpapperDataTable = WallpapperDataSet.Tables[0];
+            //try
+            {
+                using (StreamReader SR = new StreamReader(String_Path + @"\Wallpapper-DB.xml", System.Text.Encoding.UTF8))
+                {
+                    WallpapperDataSet = new DataSet();
+                    WallpapperDataSet.ReadXml(SR, XmlReadMode.Auto); // Считываем XML-схемуиданныев DataSet
+                    WallpapperDataTable = WallpapperDataSet.Tables[0];
+                }
             }
+            //catch
+            //{
+             //   MessageBox.Show("Error");
+           // }
+           
         }
 
         private void B_SEARCH_Click(object sender, EventArgs e) {

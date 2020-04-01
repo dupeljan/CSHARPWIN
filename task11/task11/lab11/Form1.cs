@@ -193,7 +193,7 @@ namespace lab11 {
                 fileExtension = ".mdb";
             }
 
-            String directory = @"C:\Users\Ibrag\Desktop\C#\Lab Works\Programms\lab11\";
+            String directory = @"C:\Users\dupel\source\repos\SHARPwin\task11\";
  
             Directory.CreateDirectory(directory + @"\Копии");
             File.Copy(directory + "LWP10-DB-OLE-Special" + fileExtension, directory + @"\Копии\" + @"LWP10-DB-OLE-Special" + fileExtension, true);
