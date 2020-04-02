@@ -318,11 +318,11 @@
             // 
             // trackBarSpawnLimits
             // 
-            this.trackBarSpawnLimits.Location = new System.Drawing.Point(23, 630);
+            this.trackBarSpawnLimits.Location = new System.Drawing.Point(0, 630);
             this.trackBarSpawnLimits.Maximum = 10000;
             this.trackBarSpawnLimits.Minimum = 1;
             this.trackBarSpawnLimits.Name = "trackBarSpawnLimits";
-            this.trackBarSpawnLimits.Size = new System.Drawing.Size(374, 56);
+            this.trackBarSpawnLimits.Size = new System.Drawing.Size(633, 56);
             this.trackBarSpawnLimits.TabIndex = 28;
             this.trackBarSpawnLimits.Value = 1;
             this.trackBarSpawnLimits.Scroll += new System.EventHandler(this.trackBarSpawnLimits_Scroll);
@@ -330,7 +330,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(42, 610);
+            this.label12.Location = new System.Drawing.Point(12, 610);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(83, 17);
             this.label12.TabIndex = 29;
@@ -339,18 +339,18 @@
             // labelSpawnLimit
             // 
             this.labelSpawnLimit.AutoSize = true;
-            this.labelSpawnLimit.Location = new System.Drawing.Point(153, 610);
+            this.labelSpawnLimit.Location = new System.Drawing.Point(123, 610);
             this.labelSpawnLimit.Name = "labelSpawnLimit";
             this.labelSpawnLimit.Size = new System.Drawing.Size(0, 17);
             this.labelSpawnLimit.TabIndex = 30;
             // 
             // trackBarSpeed
             // 
-            this.trackBarSpeed.Location = new System.Drawing.Point(436, 630);
+            this.trackBarSpeed.Location = new System.Drawing.Point(640, 627);
             this.trackBarSpeed.Maximum = 300;
             this.trackBarSpeed.Minimum = 1;
             this.trackBarSpeed.Name = "trackBarSpeed";
-            this.trackBarSpeed.Size = new System.Drawing.Size(349, 56);
+            this.trackBarSpeed.Size = new System.Drawing.Size(160, 56);
             this.trackBarSpeed.TabIndex = 31;
             this.trackBarSpeed.Value = 1;
             this.trackBarSpeed.Scroll += new System.EventHandler(this.trackBarSpeed_Scroll);
@@ -358,7 +358,7 @@
             // labelSpeed
             // 
             this.labelSpeed.AutoSize = true;
-            this.labelSpeed.Location = new System.Drawing.Point(558, 610);
+            this.labelSpeed.Location = new System.Drawing.Point(762, 607);
             this.labelSpeed.Name = "labelSpeed";
             this.labelSpeed.Size = new System.Drawing.Size(0, 17);
             this.labelSpeed.TabIndex = 33;
@@ -366,7 +366,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(447, 610);
+            this.label13.Location = new System.Drawing.Point(651, 607);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(49, 17);
             this.label13.TabIndex = 32;
