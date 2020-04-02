@@ -307,9 +307,9 @@ namespace Life0
             var contain = meals.Contains(meal);
             if (!contain && partner == null)
                 return mindRandom();
-            else if (!contain)
+            else if (!contain || ( entity.getStepsLeft() / (double) EntityHealthLimit ) > 0.8 )
                 return moveToTarget(pos, partner.getPos());
-            else if (partner == null)
+            else if (partner == null || entityes.Count > entityesLimits / 2 )
                 return moveToTarget(pos, meal);
             else
             {
@@ -413,10 +413,13 @@ namespace Life0
                         }
                     }
 
-                entity.setTargetPartner(target);
+                if (partnerExist)
+                    entity.setTargetPartner(target);
+
             }
             if (!partnerExist)
                 return null;
+          
 
             return target;
         }

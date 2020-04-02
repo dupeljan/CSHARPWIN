@@ -241,7 +241,7 @@
             this.buttonClever.Name = "buttonClever";
             this.buttonClever.Size = new System.Drawing.Size(136, 34);
             this.buttonClever.TabIndex = 19;
-            this.buttonClever.Text = "Wondering";
+            this.buttonClever.Text = "Clever";
             this.buttonClever.UseVisualStyleBackColor = true;
             this.buttonClever.Click += new System.EventHandler(this.button4_Click);
             // 
@@ -257,7 +257,7 @@
             // progressBarPopulation
             // 
             this.progressBarPopulation.ForeColor = System.Drawing.Color.SeaGreen;
-            this.progressBarPopulation.Location = new System.Drawing.Point(842, 341);
+            this.progressBarPopulation.Location = new System.Drawing.Point(841, 355);
             this.progressBarPopulation.Name = "progressBarPopulation";
             this.progressBarPopulation.Size = new System.Drawing.Size(249, 23);
             this.progressBarPopulation.TabIndex = 21;
@@ -265,7 +265,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(939, 321);
+            this.label6.Location = new System.Drawing.Point(938, 335);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(75, 17);
             this.label6.TabIndex = 22;
@@ -274,7 +274,7 @@
             // progressBarAverageAge
             // 
             this.progressBarAverageAge.ForeColor = System.Drawing.Color.SeaGreen;
-            this.progressBarAverageAge.Location = new System.Drawing.Point(842, 389);
+            this.progressBarAverageAge.Location = new System.Drawing.Point(841, 403);
             this.progressBarAverageAge.Name = "progressBarAverageAge";
             this.progressBarAverageAge.Size = new System.Drawing.Size(249, 23);
             this.progressBarAverageAge.TabIndex = 23;
@@ -282,7 +282,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(925, 369);
+            this.label8.Location = new System.Drawing.Point(924, 383);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(89, 17);
             this.label8.TabIndex = 24;
@@ -291,7 +291,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(915, 419);
+            this.label9.Location = new System.Drawing.Point(914, 433);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(106, 17);
             this.label9.TabIndex = 26;
@@ -300,7 +300,7 @@
             // progressBarHealth
             // 
             this.progressBarHealth.ForeColor = System.Drawing.Color.SeaGreen;
-            this.progressBarHealth.Location = new System.Drawing.Point(842, 439);
+            this.progressBarHealth.Location = new System.Drawing.Point(841, 453);
             this.progressBarHealth.Name = "progressBarHealth";
             this.progressBarHealth.Size = new System.Drawing.Size(249, 23);
             this.progressBarHealth.TabIndex = 25;
@@ -320,9 +320,11 @@
             // 
             this.trackBarSpawnLimits.Location = new System.Drawing.Point(23, 630);
             this.trackBarSpawnLimits.Maximum = 10000;
+            this.trackBarSpawnLimits.Minimum = 1;
             this.trackBarSpawnLimits.Name = "trackBarSpawnLimits";
             this.trackBarSpawnLimits.Size = new System.Drawing.Size(374, 56);
             this.trackBarSpawnLimits.TabIndex = 28;
+            this.trackBarSpawnLimits.Value = 1;
             this.trackBarSpawnLimits.Scroll += new System.EventHandler(this.trackBarSpawnLimits_Scroll);
             // 
             // label12
