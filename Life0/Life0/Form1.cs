@@ -19,7 +19,7 @@ namespace Life0
         public Form1()
         {
             InitializeComponent();
-            game = new Game(pictureBoxGameField, entitySize);
+            game = new Game(pictureBoxGameField, entitySize,MindState.nearestMeal);
             game.initNewGame();
             
         }
@@ -41,19 +41,32 @@ namespace Life0
             if (game.getState() == GameState.inProccess)
                 pictureBoxGameField.Refresh();
             else if (game.getState() == GameState.end)
+            {
+                buttonPause_Click(sender, e);
                 MessageBox.Show("Game is ended!");
+            }
             var statistic = game.getStatistic();
             labelAlive.Text = statistic.alive.ToString();
             labelDied.Text = statistic.died.ToString();
             labelFood.Text = statistic.eatenMeals.ToString();
             labelSteps.Text = statistic.step.ToString();
             labelEntitySum.Text = (statistic.alive + statistic.died).ToString();
+            if (statistic.mindState == MindState.random)
+                labelMindState.Text = "Random moving";
+            else if(statistic.mindState == MindState.nearestMeal)
+                labelMindState.Text = "Go to \nnearest meal";
+            else if (statistic.mindState == MindState.nearestPartner)
+                labelMindState.Text = "Go to \nnearest partner";
+            else if (statistic.mindState == MindState.clever)
+                labelMindState.Text = "Estimate situation\n and choose \nfood or partner";
 
         }
 
         // Init new game
         private void buttonTryAgain_Click(object sender, EventArgs e)
         {
+            if (pause)
+                buttonPause_Click(sender, e);
             game.initNewGame();
         }
 
@@ -65,6 +78,28 @@ namespace Life0
             else
                 timer1.Stop();
             pause = !pause;
+        }
+
+        // Mind setters
+        private void button1_Click(object sender, EventArgs e)
+        {
+            game.setMind(MindState.random);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            game.setMind(MindState.nearestMeal);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            game.setMind(MindState.clever);
+        }
+
+        private void buttonPartner_Click(object sender, EventArgs e)
+        {
+            game.setMind(MindState.nearestPartner);
+
         }
     }
 }

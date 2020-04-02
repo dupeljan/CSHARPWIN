@@ -17,6 +17,14 @@ namespace Life0
         end        = 2
     }
 
+    enum MindState
+    {
+        random,
+        nearestPartner,
+        nearestMeal,
+        clever
+    }
+
     class Game
     {
         // Entity collors: 0 female, 1 male, 2 food
@@ -28,6 +36,7 @@ namespace Life0
             public int died;   // Count of died entityes
             public int step;   // current step
             public int eatenMeals; // Count of eaten meals
+            public MindState mindState; // Current mindstate
         }
 
         // Struct for meals config
@@ -57,6 +66,7 @@ namespace Life0
         int eatenMeals; // Count of eaten meals
         Size entitySize;  // Entity size
         GameState state;  // Game state
+        MindState mindState; // Mind state
         // Init food config
         MealsConfig mealsConf = new MealsConfig(100, 10, 100);
         int kidsRadiusMin = 30;  // Distance from first parent when Entity born
@@ -64,11 +74,12 @@ namespace Life0
         int entityesLimits = 1000; // Entytyes can't spawn if it's count > than this limit
         int stepLenght = 5;
         
-        public Game(PictureBox field, Size entitySize)
+        public Game(PictureBox field, Size entitySize,MindState mindState)
         {
             width = field.Width;
             height = field.Height;
             this.entitySize = entitySize;
+            this.mindState = mindState;
             state = GameState.doesntInit;
         }
 
@@ -101,13 +112,29 @@ namespace Life0
             if (steps % mealsConf.stepsUpdate == 0)
                 updateMeals();
 
+            if (entityes.Count == 0)
+            {
+                state = GameState.end;
+                return;
+            }
             // Remove died entityes
             {
                 var newEntityes = new List<Entity>();
                 foreach (var e in entityes)
                 {
                     // CHOOSE STRATEGY HERE
-                    var step = mindNearestPartner(e);
+                    int step;
+                    if (mindState == MindState.random)
+                        step = mindRandom();
+                    else if (mindState == MindState.nearestMeal)
+                        step = mindNearestMeal(e);
+                    else if (mindState == MindState.nearestPartner)
+                        step = mindNearestPartner(e);
+                    else if (mindState == MindState.clever)
+                        step = mindClever(e);
+                    else 
+                        step = mindRandom();
+                    
                     e.makeStep(step);
                     // Add only alive antityes
                     if (e.getState() == LifeState.alive)
@@ -232,72 +259,44 @@ namespace Life0
 
         int mindNearestPartner(Entity entity)
         {
-            var pos = entity.getPos();
-            var gen = entity.getGender();
-            var target = entity.getTargetPartner();
-            bool partnerExist = true;
-            // If target isn't alive
-            // Got nearest
-            if (target == null || !entityes.Contains(target))
-            {
-                // Get fisrt entity
-                partnerExist = false;
-                target = entityes[0];
-                int dst = distance(pos, target.getPos());
-                foreach(var e in entityes)
-                    if ( e.getGender() != gen)
-                    {
-                        partnerExist = true;
-                        // if first target have same gender
-                        if ( XOR(target.getGender() == gen, distance(pos, e.getPos()) < dst) )
-                        {
-                            dst = distance(pos, e.getPos());
-                            target = e;                        
-                        }                  
-                    }
-
-                entity.setTargetPartner(target);
-            }
-            if (!partnerExist)
+            var target = nearestPartner(entity);
+            if (target == null)
                 return mindRandom();
-
-            return moveToTarget(pos, target.getPos());
+            return moveToTarget(entity.getPos(), target.getPos());
         }
 
         // Go to nearest meal
         int mindNearestMeal(Entity entity)
         {
             if ( meals.Count != 0)
-            {
-                var pos = entity.getPos();
-                var target = entity.getTargetMeal(); 
-                // if Entity has't target
-                if (target == null || ! meals.Contains(target))
-                {
-                    // Get nearest meal
-                    target = meals[0];
-                    int dst = distance(pos, target);
-                    foreach (var m in meals)
-                    {
-                        var locDist = distance(m, pos);
-                        if (locDist < dst)
-                        {
-                            target = m;
-                            dst = locDist;
-                        }
-                    }
-                    entity.setTargetMeal(target);
-                }
-
-                return moveToTarget(pos, target);
-                
+            { 
+                var target = nearestMeal(entity);
+                return moveToTarget(entity.getPos(), target);
             }
-
             return mindRandom();
         }
 
+        
         // Go to nearest meal or partner depending on distance
-        //int mindMiddle()
+        int mindClever(Entity entity)
+        {
+            var meal = nearestMeal(entity);
+            var partner = nearestPartner(entity);
+            var pos = entity.getPos();
+            var contain = meals.Contains(meal);
+            if (!contain && partner == null)
+                return mindRandom();
+            else if (!contain)
+                return moveToTarget(pos, partner.getPos());
+            else if (partner == null)
+                return moveToTarget(pos, meal);
+            else
+            {
+                if (distance(pos, meal) < distance(pos, partner.getPos()))
+                    return moveToTarget(pos, meal);
+                return moveToTarget(pos, partner.getPos());
+            }
+        }
 
         // Return direction to move from pos to target
         int moveToTarget(Point pos,Point target)
@@ -336,6 +335,72 @@ namespace Life0
             }
         }
 
+
+        // Get nearest meal
+        Point nearestMeal(Entity entity)
+        {
+            if (meals.Count != 0)
+            {
+                var pos = entity.getPos();
+                var target = entity.getTargetMeal();
+                // if Entity has't target
+                if (target == null || !meals.Contains(target))
+                {
+                    // Get nearest meal
+                    target = meals[0];
+                    int dst = distance(pos, target);
+                    foreach (var m in meals)
+                    {
+                        var locDist = distance(m, pos);
+                        if (locDist < dst)
+                        {
+                            target = m;
+                            dst = locDist;
+                        }
+                    }
+                    entity.setTargetMeal(target);
+                }
+                return target;
+            }
+            return entity.getPos();
+        }
+
+        // Get nearest partner
+        Entity nearestPartner(Entity entity)
+        {
+            var pos = entity.getPos();
+            var gen = entity.getGender();
+            var target = entity.getTargetPartner();
+            bool partnerExist = true;
+            // If target isn't alive
+            // Got nearest
+            if (target == null || !entityes.Contains(target))
+            {
+                // Get fisrt entity
+                partnerExist = false;
+                target = entityes[0];
+                int dst = distance(pos, target.getPos());
+                foreach (var e in entityes)
+                    if (e.getGender() != gen)
+                    {
+                        partnerExist = true;
+                        // if first target have same gender
+                        if (XOR(target.getGender() == gen, distance(pos, e.getPos()) < dst))
+                        {
+                            dst = distance(pos, e.getPos());
+                            target = e;
+                        }
+                    }
+
+                entity.setTargetPartner(target);
+            }
+            if (!partnerExist)
+                return null;
+
+            return target;
+        }
+
+        // Return statistic
         public GameStatistic getStatistic()
         {
             var g = new GameStatistic();
@@ -343,6 +408,7 @@ namespace Life0
             g.died = died;
             g.eatenMeals = eatenMeals;
             g.step = steps;
+            g.mindState = mindState;
             return g;
         }
         public Size getSize()
@@ -351,7 +417,7 @@ namespace Life0
         }
 
 
-        // Return statistic
+     
         public List<Entity> GetEntities()
         {
             return entityes;
@@ -367,5 +433,9 @@ namespace Life0
             return state;
         }
      
+        public void setMind(MindState m)
+        {
+            this.mindState = m;
+        }
     }
 }
