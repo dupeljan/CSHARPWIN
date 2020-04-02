@@ -32,6 +32,17 @@
             this.pictureBoxGameField = new System.Windows.Forms.PictureBox();
             this.buttonTryAgain = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelSteps = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.labelAlive = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.labelDied = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.buttonPause = new System.Windows.Forms.Button();
+            this.labelEntitySum = new System.Windows.Forms.Label();
+            this.labelFood = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGameField)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,7 +57,7 @@
             // 
             // buttonTryAgain
             // 
-            this.buttonTryAgain.Location = new System.Drawing.Point(860, 61);
+            this.buttonTryAgain.Location = new System.Drawing.Point(842, 82);
             this.buttonTryAgain.Name = "buttonTryAgain";
             this.buttonTryAgain.Size = new System.Drawing.Size(101, 32);
             this.buttonTryAgain.TabIndex = 1;
@@ -59,17 +70,124 @@
             this.timer1.Enabled = true;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(876, 136);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(55, 17);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Step №";
+            // 
+            // labelSteps
+            // 
+            this.labelSteps.AutoSize = true;
+            this.labelSteps.Location = new System.Drawing.Point(934, 136);
+            this.labelSteps.Name = "labelSteps";
+            this.labelSteps.Size = new System.Drawing.Size(0, 17);
+            this.labelSteps.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(876, 192);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(38, 17);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Alive";
+            // 
+            // labelAlive
+            // 
+            this.labelAlive.AutoSize = true;
+            this.labelAlive.Location = new System.Drawing.Point(928, 192);
+            this.labelAlive.Name = "labelAlive";
+            this.labelAlive.Size = new System.Drawing.Size(0, 17);
+            this.labelAlive.TabIndex = 5;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(876, 227);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(37, 17);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Died";
+            // 
+            // labelDied
+            // 
+            this.labelDied.AutoSize = true;
+            this.labelDied.Location = new System.Drawing.Point(928, 227);
+            this.labelDied.Name = "labelDied";
+            this.labelDied.Size = new System.Drawing.Size(0, 17);
+            this.labelDied.TabIndex = 7;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(811, 258);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(103, 17);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Entityes in sum";
+            // 
+            // buttonPause
+            // 
+            this.buttonPause.Location = new System.Drawing.Point(842, 43);
+            this.buttonPause.Name = "buttonPause";
+            this.buttonPause.Size = new System.Drawing.Size(101, 33);
+            this.buttonPause.TabIndex = 9;
+            this.buttonPause.Text = "Pause";
+            this.buttonPause.UseVisualStyleBackColor = true;
+            this.buttonPause.Click += new System.EventHandler(this.buttonPause_Click);
+            // 
+            // labelEntitySum
+            // 
+            this.labelEntitySum.AutoSize = true;
+            this.labelEntitySum.Location = new System.Drawing.Point(928, 258);
+            this.labelEntitySum.Name = "labelEntitySum";
+            this.labelEntitySum.Size = new System.Drawing.Size(0, 17);
+            this.labelEntitySum.TabIndex = 10;
+            // 
+            // labelFood
+            // 
+            this.labelFood.AutoSize = true;
+            this.labelFood.Location = new System.Drawing.Point(928, 165);
+            this.labelFood.Name = "labelFood";
+            this.labelFood.Size = new System.Drawing.Size(0, 17);
+            this.labelFood.TabIndex = 12;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(834, 165);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(80, 17);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Food eaten";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1001, 603);
+            this.Controls.Add(this.labelFood);
+            this.Controls.Add(this.label10);
+            this.Controls.Add(this.labelEntitySum);
+            this.Controls.Add(this.buttonPause);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.labelDied);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.labelAlive);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.labelSteps);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.buttonTryAgain);
             this.Controls.Add(this.pictureBoxGameField);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGameField)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -78,6 +196,17 @@
         private System.Windows.Forms.PictureBox pictureBoxGameField;
         private System.Windows.Forms.Button buttonTryAgain;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelSteps;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label labelAlive;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label labelDied;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button buttonPause;
+        private System.Windows.Forms.Label labelEntitySum;
+        private System.Windows.Forms.Label labelFood;
+        private System.Windows.Forms.Label label10;
     }
 }
 

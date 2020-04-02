@@ -21,6 +21,15 @@ namespace Life0
     {
         // Entity collors: 0 female, 1 male, 2 food
         static public Color[] colors = new Color[] { Color.Red, Color.Blue, Color.Green };
+        // Statistic struct
+        public struct GameStatistic
+        {
+            public int alive;  // Count of alive entityes
+            public int died;   // Count of died entityes
+            public int step;   // current step
+            public int eatenMeals; // Count of eaten meals
+        }
+
         // Struct for meals config
         struct MealsConfig
         {
@@ -44,6 +53,8 @@ namespace Life0
         int steps;         // Game steps count  
         int width;        // Game field width
         int height;       // Game field height
+        int died;         // Count of died entityes
+        int eatenMeals; // Count of eaten meals
         Size entitySize;  // Entity size
         GameState state;  // Game state
         // Init food config
@@ -73,8 +84,11 @@ namespace Life0
             entityes.Add(new Entity(Gender.male, new Point(400, 300), stepLenght));
             // And one female
             entityes.Add(new Entity(Gender.female, new Point(405, 305), stepLenght));
-            // Init steps count
+            // Init counters
             steps = 0;
+            died = 0;
+            eatenMeals = 0;
+
             // Change game state
             state = GameState.inProccess;
         }
@@ -98,6 +112,8 @@ namespace Life0
                     // Add only alive antityes
                     if (e.getState() == LifeState.alive)
                         newEntityes.Add(e);
+                    else
+                        died += 1;
                 }
  
                 // Return to entityes
@@ -115,11 +131,13 @@ namespace Life0
                         if (isClose(e.getPos(), m))
                         {
                             e.eat();
+                            eatenMeals += 1;
                             newMeals.Remove(m);
                         }
 
                 // Return to meals
                 meals = newMeals;
+
             }
 
             if( entityes.Count < entityesLimits)
@@ -278,11 +296,13 @@ namespace Life0
             return mindRandom();
         }
 
-        
+        // Go to nearest meal or partner depending on distance
+        //int mindMiddle()
 
+        // Return direction to move from pos to target
         int moveToTarget(Point pos,Point target)
         {
-            // Move to the target
+           
             var deltaX = target.X - pos.X;
             var deltaY = target.Y - pos.Y;
 
@@ -315,11 +335,23 @@ namespace Life0
                     return 3; // Turn right
             }
         }
+
+        public GameStatistic getStatistic()
+        {
+            var g = new GameStatistic();
+            g.alive = entityes.Count;
+            g.died = died;
+            g.eatenMeals = eatenMeals;
+            g.step = steps;
+            return g;
+        }
         public Size getSize()
         {
             return entitySize;
         }
 
+
+        // Return statistic
         public List<Entity> GetEntities()
         {
             return entityes;

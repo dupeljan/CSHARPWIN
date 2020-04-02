@@ -14,7 +14,7 @@ namespace Life0
     {
         Game game;
         Size entitySize = new Size(20, 20);
-
+        bool pause = false;
         // Inicializing form
         public Form1()
         {
@@ -30,9 +30,8 @@ namespace Life0
             var g = e.Graphics;
             foreach (var ent in game.GetEntities())
                 g.FillEllipse(new SolidBrush(Game.colors[(int)ent.getGender()]), new Rectangle(ent.getPos(), game.getSize()));
-            foreach(var meal in game.GetMeals())
-                g.FillEllipse(new SolidBrush(Game.colors[2]), new Rectangle(meal,game.getSize()));
-
+            foreach (var meal in game.GetMeals())
+                g.FillEllipse(new SolidBrush(Game.colors[2]), new Rectangle(meal, game.getSize()));
         }
 
         // Timer tick handler
@@ -43,11 +42,29 @@ namespace Life0
                 pictureBoxGameField.Refresh();
             else if (game.getState() == GameState.end)
                 MessageBox.Show("Game is ended!");
+            var statistic = game.getStatistic();
+            labelAlive.Text = statistic.alive.ToString();
+            labelDied.Text = statistic.died.ToString();
+            labelFood.Text = statistic.eatenMeals.ToString();
+            labelSteps.Text = statistic.step.ToString();
+            labelEntitySum.Text = (statistic.alive + statistic.died).ToString();
+
         }
 
+        // Init new game
         private void buttonTryAgain_Click(object sender, EventArgs e)
         {
             game.initNewGame();
+        }
+
+        // Pause timer
+        private void buttonPause_Click(object sender, EventArgs e)
+        {
+            if (pause)
+                timer1.Start();
+            else
+                timer1.Stop();
+            pause = !pause;
         }
     }
 }
