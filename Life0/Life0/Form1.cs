@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -47,6 +47,8 @@ namespace Life0
         // Timer tick handler
         private void timer1_Tick(object sender, EventArgs e)
         {
+            if (game == null)
+                return;
             game.makeStep();
            // if (game.getState() == GameState.inProccess)
                 pictureBoxGameField.Refresh();

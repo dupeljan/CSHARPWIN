@@ -301,6 +301,8 @@ namespace Life0
         // Go to nearest meal or partner depending on distance
         int mindClever(Entity entity)
         {
+            if (entity == null)
+                return -1;
             var meal = nearestMeal(entity);
             var partner = nearestPartner(entity);
             var pos = entity.getPos();
