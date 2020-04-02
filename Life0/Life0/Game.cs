@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Linq;
 
 namespace Life0
 {
@@ -36,6 +35,8 @@ namespace Life0
             public int died;   // Count of died entityes
             public int step;   // current step
             public int eatenMeals; // Count of eaten meals
+            public int agesSum; // Sum of all alive entityes ages
+            public int healthSum; // Sum of all alive entityes health
             public MindState mindState; // Current mindstate
         }
 
@@ -64,22 +65,30 @@ namespace Life0
         int height;       // Game field height
         int died;         // Count of died entityes
         int eatenMeals; // Count of eaten meals
+        int sumEntityAges; // Age sum of alive entity
+        int sumEntityHealth; // Health sum of alive entity
         Size entitySize;  // Entity size
         GameState state;  // Game state
         MindState mindState; // Mind state
+
+
         // Init food config
         MealsConfig mealsConf = new MealsConfig(100, 10, 100);
         int kidsRadiusMin = 30;  // Distance from first parent when Entity born
         int kidsRadiusMax = 100;
-        int entityesLimits = 1000; // Entytyes can't spawn if it's count > than this limit
+        int entityesLimits; // Entytyes can't spawn if it's count > than this limit
         int stepLenght = 5;
-        
-        public Game(PictureBox field, Size entitySize,MindState mindState)
+        int EntityStepsLimit = 500; // Steps limits for each entity
+        int EntityHealthLimit = 100; // Health limits for each entity
+
+
+        public Game(PictureBox field, Size entitySize,MindState mindState, int spawnLimit)
         {
             width = field.Width;
             height = field.Height;
             this.entitySize = entitySize;
             this.mindState = mindState;
+            this.entityesLimits = spawnLimit;
             state = GameState.doesntInit;
         }
 
@@ -92,13 +101,14 @@ namespace Life0
             meals = new List<Point>();
            
             // Add one male
-            entityes.Add(new Entity(Gender.male, new Point(400, 300), stepLenght));
+            entityes.Add(new Entity(Gender.male, new Point(400, 300), stepLenght,EntityStepsLimit, EntityHealthLimit));
             // And one female
-            entityes.Add(new Entity(Gender.female, new Point(405, 305), stepLenght));
+            entityes.Add(new Entity(Gender.female, new Point(405, 305), stepLenght, EntityStepsLimit, EntityHealthLimit));
             // Init counters
             steps = 0;
             died = 0;
             eatenMeals = 0;
+            sumEntityAges = 0;
 
             // Change game state
             state = GameState.inProccess;
@@ -120,25 +130,36 @@ namespace Life0
             // Remove died entityes
             {
                 var newEntityes = new List<Entity>();
+
+                // Init sum of age
+                sumEntityAges = 0;
+                // Init sum of health
+                sumEntityHealth = 0;
                 foreach (var e in entityes)
                 {
-                    // CHOOSE STRATEGY HERE
-                    int step;
-                    if (mindState == MindState.random)
-                        step = mindRandom();
-                    else if (mindState == MindState.nearestMeal)
-                        step = mindNearestMeal(e);
-                    else if (mindState == MindState.nearestPartner)
-                        step = mindNearestPartner(e);
-                    else if (mindState == MindState.clever)
-                        step = mindClever(e);
-                    else 
-                        step = mindRandom();
-                    
-                    e.makeStep(step);
+                   
                     // Add only alive antityes
                     if (e.getState() == LifeState.alive)
+                    {
+                        // CHOOSE STRATEGY HERE
+                        int step;
+                        if (mindState == MindState.random)
+                            step = mindRandom();
+                        else if (mindState == MindState.nearestMeal)
+                            step = mindNearestMeal(e);
+                        else if (mindState == MindState.nearestPartner)
+                            step = mindNearestPartner(e);
+                        else if (mindState == MindState.clever)
+                            step = mindClever(e);
+                        else
+                            step = mindRandom();
+
+                        e.makeStep(step);
+
                         newEntityes.Add(e);
+                        sumEntityAges += e.getSteps();
+                        sumEntityHealth += e.getStepsLeft();
+                    }   
                     else
                         died += 1;
                 }
@@ -187,7 +208,7 @@ namespace Life0
                                     var r = random.Next(kidsRadiusMin, kidsRadiusMax);
                                     newPos = new Point(newPos.X + (int)( r * Math.Cos(fi)),
                                          newPos.Y + (int)(r * Math.Sin(fi)));
-                                    newEntityes.Add(new Entity((Gender)(random.Next() % 2), newPos,stepLenght));
+                                    newEntityes.Add(new Entity((Gender)(random.Next() % 2), newPos,stepLenght, EntityStepsLimit, EntityHealthLimit));
 
                                 }
                             }
@@ -409,6 +430,8 @@ namespace Life0
             g.eatenMeals = eatenMeals;
             g.step = steps;
             g.mindState = mindState;
+            g.agesSum = sumEntityAges;
+            g.healthSum = sumEntityHealth;
             return g;
         }
         public Size getSize()
@@ -417,7 +440,11 @@ namespace Life0
         }
 
 
-     
+        public int getEntityLimit()
+        {
+            return entityesLimits;
+        }
+
         public List<Entity> GetEntities()
         {
             return entityes;
@@ -436,6 +463,35 @@ namespace Life0
         public void setMind(MindState m)
         {
             this.mindState = m;
+        }
+
+        public int getEntityStepsLimit()
+        {
+            return EntityStepsLimit;
+        }
+        
+        public int getEntityHealthLimit()
+        {
+            return EntityHealthLimit;
+        }
+
+        public void setentityesLimits(int count)
+        {
+            this.entityesLimits = count;
+        }
+        public void addMale(Point pos)
+        {
+            entityes.Add(new Entity(Gender.male, pos, stepLenght, EntityStepsLimit, EntityHealthLimit));
+        }
+
+        public void addFemale(Point pos)
+        {
+            entityes.Add(new Entity(Gender.female, pos, stepLenght, EntityStepsLimit, EntityHealthLimit));
+        }
+
+        public void addFood(Point pos)
+        {
+            meals.Add(pos);
         }
     }
 }

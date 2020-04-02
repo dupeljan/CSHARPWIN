@@ -23,14 +23,13 @@ namespace Life0
     class Entity
     {
         int stepsGlobal = 0;        // Count of Entity steps during life
-        int stepsLimit = 500;         // Limit of Entity global steps
+        int stepsLimit;         // Limit of Entity global steps
         int stepsLeft = 20;          // Count of remainig steps
-        int stepsLeftLimitUp = 100;   // Upper limit of remainig steps
+        int stepsLeftLimitUp;   // Upper limit of remainig steps
         int stepsLeftLimitDown = 0; // Bottom limit of remainig steps
         int stepLen;            // Length of step in pixels
         // Entity direcion 0 up to 3 
         // up down left right
-        int direction;                
         Gender gender;             // Entity gender: 0 feamle, 1 male
         Point pos;              // Entity position on the field
         Point targetMeal;           // Target meal point for Entity ( used for mind algorithms )
@@ -38,11 +37,13 @@ namespace Life0
         LifeState state;        // Entity life state
         
 
-        public Entity(Gender gender, Point pos, int stepLen)
+        public Entity(Gender gender, Point pos, int stepLen,int stepsLimit, int stepsLeftLimitUp)
         {
             this.gender = gender;
             this.pos = pos;
             this.stepLen = stepLen;
+            this.stepsLimit = stepsLimit;
+            this.stepsLeftLimitUp = stepsLeftLimitUp;
             state = LifeState.alive;
         }
 
@@ -119,6 +120,11 @@ namespace Life0
         public void setTargetPartner(Entity target)
         {
             this.targetPartner = target;
+        }
+
+        public int getSteps()
+        {
+            return stepsGlobal;
         }
     }
 }
