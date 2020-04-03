@@ -39,6 +39,7 @@ namespace BattleShip0
         public Form1()
         {
             InitializeComponent();
+            KeyPreview = true;
             setGameState(GameState.end);
         }
 
@@ -70,6 +71,43 @@ namespace BattleShip0
 
         }
 
+        // Send pressed keys to ally field
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(gameState == GameState.init)
+            {
+               // MessageBox.Show(e.KeyChar.ToString());
+                Direction direction;
+                switch (e.KeyChar.ToString())
+                {
+                    case "w":
+                        direction = Direction.up;
+                        break;
+                    case "a":
+                        direction = Direction.left;
+                        break;
+                    case "s":
+                        direction = Direction.down;
+                        break;
+                    case "d":
+                        direction = Direction.right;
+                        break;
+                    case "r":
+                        direction = Direction.rotate;
+                        break;
+                    case "p":
+                        direction = Direction.commit;
+                        break;
+                    default:
+                        return;
+                }
+                
+                allyField.MoveCurShip(direction);
+            }
+                
+        }
+
+     
         private void buttonChangeGameState_Click(object sender, EventArgs e)
         {
             setGameState((GameState)((( (int) gameState) + 1) % 3));

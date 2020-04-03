@@ -11,12 +11,12 @@ namespace BattleShip0
     struct Ship
     {
         public string name;   
-        public int length;  // Cells count of ship
+        public int size;  // Cells count of ship
         public int count;   // Count of ships on the field
-        public Ship(string name,int length,int count)
+        public Ship(string name,int size,int count)
         {
             this.name = name;
-            this.length = length;
+            this.size = size;
             this.count = count;
         }
     }
