@@ -28,12 +28,14 @@ namespace BattleShip0
         Ship curShip; // Current ship to move
         Point curPos; // Current ship position
         bool curRotate; // Current ship rotation
+        List<Ship> ships; // List of the ships on the field 
         public Field(GroupBox box,Size size,Player player)
         {
             this.box = box;
             this.size = size;
             this.player = player;
             GameInit.setField(box, size, player);
+            ships = new List<Ship>();
         }
 
         // Put ship into field
@@ -43,11 +45,11 @@ namespace BattleShip0
         // will be cleaned
         void PutShip(Point pos,bool rotated,bool fill)
         {
-            FieldState locState;
+            FieldButtonState locState;
             if (fill)
-                locState = FieldState.ship;
+               locState  = FieldButtonState.ship;
             else
-                locState = FieldState.empty;
+                locState = FieldButtonState.empty;
 
             var locPos = this.size.Height * pos.X + pos.Y;
             int delta;
@@ -55,9 +57,20 @@ namespace BattleShip0
                 delta = this.size.Height;
             else
                 delta = 1;
-            for (int i = locPos, j = 0; j < curShip.size; i += delta,j++)
-                ((FieldButton)box.Controls[i]).setState(locState);
+            for (int i = locPos, j = 0; j < curShip.size; i += delta, j++)
+            {
+                var newLocalState = locState;
+                // if it's blended
+                if (fill && ((FieldButton)box.Controls[i]).getState() == FieldButtonState.ship)
+                    newLocalState = FieldButtonState.blended;
+                if (!fill && ((FieldButton)box.Controls[i]).getState() == FieldButtonState.blended)
+                    newLocalState = FieldButtonState.ship;
+
+                ((FieldButton)box.Controls[i]).setState(newLocalState);
+
+            }
         }
+
 
         public void PutShip(Ship ship)
         {
@@ -71,11 +84,47 @@ namespace BattleShip0
             PutShip(curPos, curRotate,true);
         }
 
+        FieldButton getFB(Point pos)
+        {
+            if (size.Width <= pos.X || size.Height <= pos.Y)
+                return null;
+            return (FieldButton)box.Controls[this.size.Height * pos.X + pos.Y];
+        }
+
+        bool canCommit()
+        {
+            var res = true;
+            for (int i = 0; i < curShip.size && res; i++)
+                res = getFB(curShip.cells[i]).getState() != FieldButtonState.blended;
+            return res;
+        }
+
+        int toInt(bool x)
+        {
+            if (x)
+                return 1;
+            return 0;
+        }
+
+        // Commit position of curShip
         void CommitCurShip()
         {
+            // Add cells to curShip
+            curShip.cells.Clear();
+            for (int i = 0; i < curShip.size; i++)
+                curShip.cells.Add(new Point(curPos.X + i * toInt(curRotate), curPos.Y + i * toInt(!curRotate)));
+
+            if (!canCommit())
+            {
+                MessageBox.Show("You can't put " + curShip.name + " ship here");
+                return;
+            }
             // Unblock other buttons
             ShipButton.active = false;
-
+            // Put ship into the list
+            
+            ships.Add(curShip);
+            
         }
 
          // Move current ship on the field
@@ -84,8 +133,17 @@ namespace BattleShip0
             // If fiels hasn't current ship
             if (! ShipButton.active )
                 return;
+
+            // If it's commit
+            if (direction == Direction.commit)
+            {
+                CommitCurShip();
+                return;
+            }
+
             // Clean previous move
             PutShip(curPos, curRotate, false);
+
             Point newPos = new Point(curPos.X, curPos.Y);
             bool newRotate = curRotate;
             // Change ship position
@@ -104,9 +162,6 @@ namespace BattleShip0
                     break;
                 case Direction.rotate:
                     newRotate = !curRotate;
-                    break;
-                case Direction.commit: // commit ship in curr pos
-                    CommitCurShip();
                     break;
             }
 

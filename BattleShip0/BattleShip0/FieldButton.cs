@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace BattleShip0
 {   
-    enum FieldState
+    enum FieldButtonState
     {
         blocked,
         empty,
@@ -19,20 +19,20 @@ namespace BattleShip0
     }
     class FieldButton : Button
     {
-        public static Dictionary<FieldState, Color> colors =
-            new Dictionary<FieldState, Color>
+        public static Dictionary<FieldButtonState, Color> colors =
+            new Dictionary<FieldButtonState, Color>
             {
-                {FieldState.empty, Color.Blue },
-                {FieldState.blocked, Color.Gray },
-                {FieldState.hit, Color.Pink },
-                {FieldState.kill, Color.Red },
-                {FieldState.ship, Color.Green },
-                {FieldState.blended, Color.Red }
+                {FieldButtonState.empty, Color.Blue },
+                {FieldButtonState.blocked, Color.Gray },
+                {FieldButtonState.hit, Color.Pink },
+                {FieldButtonState.kill, Color.Red },
+                {FieldButtonState.ship, Color.Green },
+                {FieldButtonState.blended, Color.Red }
             };
 
         Point pos; // Button pos in field
-        FieldState state;
-        public FieldButton(Point pos, Point buttonShift,int fieldSize, FieldState state= FieldState.blocked) : base()
+        FieldButtonState state;
+        public FieldButton(Point pos, Point buttonShift,int fieldSize, FieldButtonState state= FieldButtonState.blocked) : base()
         {
             this.pos = pos;
            
@@ -42,10 +42,15 @@ namespace BattleShip0
             setState(state);
         }
 
-        public void setState(FieldState state)
+        public void setState(FieldButtonState state)
         {
             this.BackColor = colors[state];
             this.state = state;
+        }
+
+        public FieldButtonState getState()
+        {
+            return state;
         }
     }
 }

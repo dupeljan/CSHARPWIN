@@ -47,12 +47,9 @@ namespace BattleShip0
                 count -= 1;
                 changeTextCount();
 
-           
                 // Put ship on the field
                 field.PutShip(ship);
            
-                                
-               
             }
         }
 

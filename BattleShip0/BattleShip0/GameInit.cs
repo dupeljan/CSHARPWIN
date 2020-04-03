@@ -13,11 +13,13 @@ namespace BattleShip0
         public string name;   
         public int size;  // Cells count of ship
         public int count;   // Count of ships on the field
+        public List<Point> cells; // Ship position on the field
         public Ship(string name,int size,int count)
         {
             this.name = name;
             this.size = size;
             this.count = count;
+            this.cells = new List<Point>();
         }
     }
     class GameInit
@@ -69,11 +71,11 @@ namespace BattleShip0
             box.Size = new Size(buttonFieldShift.X + size.Width * fieldSize, buttonFieldShift.Y + size.Height* fieldSize);
 
             // Set field type
-            FieldState type;
+            FieldButtonState type;
             if (player == Player.ally)
-                type = FieldState.empty;
+                type = FieldButtonState.empty;
             else
-                type = FieldState.blocked;
+                type = FieldButtonState.blocked;
 
             // Add buttons to control
             for (int i = 0; i < size.Width; i++)
