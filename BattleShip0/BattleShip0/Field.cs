@@ -95,7 +95,21 @@ namespace BattleShip0
         {
             var res = true;
             for (int i = 0; i < curShip.size && res; i++)
+            {
                 res = getFB(curShip.cells[i]).getState() != FieldButtonState.blended;
+                // Check all neigbors
+                var pos = curShip.cells[i];
+                for (int ki = -1; ki <= 1 && res; ki++)
+                    for(int kj = -1; kj <= 1 && res; kj++)
+                    {
+                        var checkedPos = new Point(pos.X + ki, pos.Y + kj);
+                        var curFB = getFB(checkedPos);
+                        // if cell is another ship
+                        if (!curShip.cells.Contains(checkedPos) && (getFB(checkedPos).getState() == FieldButtonState.ship))
+                            res = false;
+                    }
+
+            }
             return res;
         }
 
