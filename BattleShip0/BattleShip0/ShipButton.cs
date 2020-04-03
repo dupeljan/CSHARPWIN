@@ -11,8 +11,22 @@ namespace BattleShip0
 
     class ShipButton : Button
     {
-        public static bool active = false;  // Block other ShipButton if active
+        // Static part 
 
+        public static bool active = false;  // Block other ShipButton if active
+        static int shipLeft = 0;            // Total sheeps count
+
+        public static int GetShipsLeft()
+        {
+            return shipLeft;
+        }
+
+        public static void decreseShipLeft()
+        {
+            shipLeft -= 1;
+        }
+
+        // Dynamic part
         int sHeight = 50;
         int sWidth = 120;
         public int count; // Count of sheeps left
@@ -27,7 +41,9 @@ namespace BattleShip0
             this.ship = ship;
             this.count = ship.count;
             this.field = field;
-         
+
+            // Increase static variable
+            shipLeft += this.count;
 
             changeTextCount();
         }
@@ -37,10 +53,11 @@ namespace BattleShip0
         {
             Text = ship.name + " " + count;
         }
+
+        // Button click handler
         protected override void OnClick(EventArgs e)
         {
-            // Update form status
-           (this.Parent.Parent as Form1).setStatusLabel();
+            
             
             // If buttons unblocked and ships count > 0
             if( !active && count != 0)
@@ -51,9 +68,14 @@ namespace BattleShip0
 
                 // Put ship on the field
                 field.PutShip(ship);
-           
+
+                // Update form status
+                (this.Parent.Parent as Form1).setStatusLabel();
+
             }
         }
+
+
 
     }
 }

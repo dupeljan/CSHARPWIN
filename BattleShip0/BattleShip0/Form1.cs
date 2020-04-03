@@ -46,8 +46,8 @@ namespace BattleShip0
 
         void setGameState(GameState state)
         {
-            gameState = state;
-            if ( gameState == GameState.init)
+            
+            if (state == GameState.init)
             {
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
@@ -61,15 +61,17 @@ namespace BattleShip0
                 // Init buttons for ship chosing
 
                 GameInit.SetInitButtons(groupBoxInit,allyField);
-
+                gameState = state;
             }
-            else if (gameState == GameState.end)
+            else if (state == GameState.end)
             {
                 buttonChangeGameState.Text = "Start";
+                gameState = state;
             }
-            else if (gameState == GameState.game)
+            else if (state == GameState.game && ShipButton.GetShipsLeft() == 0)
             {
                 buttonChangeGameState.Text = "Try again";
+                gameState = state;
             }
 
         }

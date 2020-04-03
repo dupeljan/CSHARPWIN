@@ -57,10 +57,9 @@ namespace BattleShip0
         //  update status - pdate form status method pointer
         public static void SetInitButtons(GroupBox box,Field field) 
         {
-                                            // Clear groupBox
+            // Clear groupBox
             ClearBox(box);
 
-            
             for ( int i = 0; i < ships.Count; i++)
                 box.Controls.Add( new ShipButton(ships[i], buttonInitShift, i,field));
  

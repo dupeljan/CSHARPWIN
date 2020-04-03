@@ -92,6 +92,7 @@ namespace BattleShip0
             return (FieldButton)box.Controls[this.size.Height * pos.X + pos.Y];
         }
 
+        // True if curShip in appropriate place in the field
         bool canCommit()
         {
             var res = true;
@@ -136,8 +137,9 @@ namespace BattleShip0
             }
             // Unblock other buttons
             ShipButton.active = false;
+            // Decrease ships count
+            ShipButton.decreseShipLeft();
             // Put ship into the list
-            
             ships.Add(curShip);
             
         }
