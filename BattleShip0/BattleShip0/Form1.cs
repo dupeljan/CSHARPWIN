@@ -14,7 +14,7 @@ namespace BattleShip0
     {
         init = 0,
         game = 1,
-        end = 2
+        end  = 2
     }
     
     enum InitState
@@ -50,12 +50,15 @@ namespace BattleShip0
             if ( gameState == GameState.init)
             {
                 buttonChangeGameState.Text = "Begin battle!";
-                // Init buttons for ship chosing
+                setStatusLabel();
+                
                 
 
                 // Init field
                 enemyField = new Field(groupBoxEnemy, fieldSize,Player.enemy);
                 allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
+
+                // Init buttons for ship chosing
 
                 GameInit.SetInitButtons(groupBoxInit,allyField);
 
@@ -71,6 +74,13 @@ namespace BattleShip0
 
         }
 
+        public void setStatusLabel()
+        {
+            if (ShipButton.active)
+                labelStatus.Text = "Put ship on the field";
+            else
+                labelStatus.Text = "Choose ship";
+        }
         // Send pressed keys to ally field
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -103,8 +113,10 @@ namespace BattleShip0
                 }
                 
                 allyField.MoveCurShip(direction);
+
+                setStatusLabel();
             }
-                
+
         }
 
      

@@ -29,7 +29,9 @@ namespace BattleShip0
             return new Point(a.X + b.X, a.Y + b.Y);
         }
 
-       // static List<ShipButton> buttons;
+       
+
+        // static List<ShipButton> buttons;
         // Shift of init buttos position
         static Point buttonInitShift = new Point(10, 20);
         static Point buttonFieldShift = new Point(5, 15);
@@ -52,12 +54,14 @@ namespace BattleShip0
         }
 
         // Return list of init buttons
-        public static void SetInitButtons(GroupBox box,Field field)
+        //  update status - pdate form status method pointer
+        public static void SetInitButtons(GroupBox box,Field field) 
         {
-            // Clear groupBox
+                                            // Clear groupBox
             ClearBox(box);
 
-            for( int i = 0; i < ships.Count; i++)
+            
+            for ( int i = 0; i < ships.Count; i++)
                 box.Controls.Add( new ShipButton(ships[i], buttonInitShift, i,field));
  
         }

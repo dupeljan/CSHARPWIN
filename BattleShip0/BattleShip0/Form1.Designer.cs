@@ -32,6 +32,8 @@
             this.groupBoxAlly = new System.Windows.Forms.GroupBox();
             this.buttonChangeGameState = new System.Windows.Forms.Button();
             this.groupBoxInit = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.labelStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // groupBoxEnemy
@@ -54,9 +56,9 @@
             // 
             // buttonChangeGameState
             // 
-            this.buttonChangeGameState.Location = new System.Drawing.Point(984, 380);
+            this.buttonChangeGameState.Location = new System.Drawing.Point(893, 394);
             this.buttonChangeGameState.Name = "buttonChangeGameState";
-            this.buttonChangeGameState.Size = new System.Drawing.Size(93, 39);
+            this.buttonChangeGameState.Size = new System.Drawing.Size(217, 54);
             this.buttonChangeGameState.TabIndex = 2;
             this.buttonChangeGameState.Text = "button1";
             this.buttonChangeGameState.UseVisualStyleBackColor = true;
@@ -71,11 +73,33 @@
             this.groupBoxInit.TabStop = false;
             this.groupBoxInit.Text = "groupBox1";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Roboto", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(889, 355);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 20);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Status:";
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.AutoSize = true;
+            this.labelStatus.Font = new System.Drawing.Font("Roboto", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus.Location = new System.Drawing.Point(960, 355);
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(35, 20);
+            this.labelStatus.TabIndex = 4;
+            this.labelStatus.Text = "init";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1145, 460);
+            this.Controls.Add(this.labelStatus);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBoxInit);
             this.Controls.Add(this.buttonChangeGameState);
             this.Controls.Add(this.groupBoxAlly);
@@ -84,6 +108,7 @@
             this.Text = "Form1";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -93,6 +118,8 @@
         private System.Windows.Forms.GroupBox groupBoxAlly;
         private System.Windows.Forms.Button buttonChangeGameState;
         private System.Windows.Forms.GroupBox groupBoxInit;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelStatus;
     }
 }
 

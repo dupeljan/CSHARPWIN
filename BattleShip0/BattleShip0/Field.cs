@@ -86,7 +86,8 @@ namespace BattleShip0
 
         FieldButton getFB(Point pos)
         {
-            if (size.Width <= pos.X || size.Height <= pos.Y)
+            if (size.Width <= pos.X || size.Height <= pos.Y
+                || pos.X < 0 || pos.Y < 0)
                 return null;
             return (FieldButton)box.Controls[this.size.Height * pos.X + pos.Y];
         }
@@ -105,7 +106,7 @@ namespace BattleShip0
                         var checkedPos = new Point(pos.X + ki, pos.Y + kj);
                         var curFB = getFB(checkedPos);
                         // if cell is another ship
-                        if (!curShip.cells.Contains(checkedPos) && (getFB(checkedPos).getState() == FieldButtonState.ship))
+                        if (curFB != null && !curShip.cells.Contains(checkedPos) && (getFB(checkedPos).getState() == FieldButtonState.ship))
                             res = false;
                     }
 

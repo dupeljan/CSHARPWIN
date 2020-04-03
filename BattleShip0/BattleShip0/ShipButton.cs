@@ -39,10 +39,12 @@ namespace BattleShip0
         }
         protected override void OnClick(EventArgs e)
         {
+            // Update form status
+           (this.Parent.Parent as Form1).setStatusLabel();
+            
             // If buttons unblocked and ships count > 0
             if( !active && count != 0)
             {
-
                 // Decrese count of ships
                 count -= 1;
                 changeTextCount();
