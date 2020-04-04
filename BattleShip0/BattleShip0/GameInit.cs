@@ -14,12 +14,34 @@ namespace BattleShip0
         public int size;  // Cells count of ship
         public int count;   // Count of ships on the field
         public List<Point> cells; // Ship position on the field
+        public List<Point> cellsInit; // Copy of hip position on the field
+
         public Ship(string name,int size,int count)
         {
             this.name = name;
             this.size = size;
             this.count = count;
             this.cells = new List<Point>();
+            this.cellsInit = new List<Point>();
+        }
+
+        public Ship(Ship ship)
+        {
+            this.name = ship.name;
+            this.size = ship.size;
+            this.count = ship.count;
+            this.cells = new List<Point>();
+            this.cellsInit = new List<Point>();
+            foreach (var c in ship.cells) 
+                this.cells.Add(c);
+            foreach (var c in ship.cellsInit)
+                this.cellsInit.Add(c);
+        }
+        public void SaveCells()
+        {
+            cellsInit.Clear();
+            foreach (var c in cells)
+                cellsInit.Add(c);
         }
     }
     class GameInit
@@ -39,13 +61,16 @@ namespace BattleShip0
 
         
         // Ship sizes and count
-        public static List<Ship> ships = new List<Ship>
+        public static List<Ship> GetShips()
         {
-             new Ship("Biggest!",4,1),
-             new Ship("Big one",3,2),
-             new Ship("Middle",2,3),
-             new Ship("Small",1,4),
-        };
+            return new List<Ship>
+            { new Ship("Biggest!", 4, 1),
+             new Ship("Big one", 3, 2),
+             new Ship("Middle", 2, 3),
+             new Ship("Small", 1, 4),
+            };
+        }
+
 
         public static void ClearBox(GroupBox box)
         {
@@ -64,7 +89,7 @@ namespace BattleShip0
         {
             // Clear groupBox
             ClearBox(box);
-
+            var ships = GetShips();
             for ( int i = 0; i < ships.Count; i++)
                 box.Controls.Add( new ShipButton(ships[i], buttonInitShift, i,field));
  

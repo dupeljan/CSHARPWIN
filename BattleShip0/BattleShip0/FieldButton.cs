@@ -15,7 +15,8 @@ namespace BattleShip0
         ship,
         hit,
         kill,
-        blended
+        blended,
+        miss
     }
     enum ColorMode
     {
@@ -32,7 +33,9 @@ namespace BattleShip0
                 {FieldButtonState.hit, Color.Pink },
                 {FieldButtonState.kill, Color.Red },
                 {FieldButtonState.ship, Color.Green },
-                {FieldButtonState.blended, Color.Red }
+                {FieldButtonState.blended, Color.Red },
+                {FieldButtonState.miss, Color.Yellow }
+
             };
 
         Point pos; // Button pos in field
@@ -50,9 +53,18 @@ namespace BattleShip0
             setState(state);
         }
 
+        public void Shot()
+        {
+            this.BackColor = colors[state];
+        }
         public void setState(FieldButtonState state)
         {
-            if (mode == ColorMode.normal || state == FieldButtonState.blocked)
+            if ( !(
+                mode == ColorMode.silent && 
+                        ( state == FieldButtonState.ship ||
+                          state == FieldButtonState.empty ||
+                          state == FieldButtonState.blended)
+                ) )
                 this.BackColor = colors[state];
             this.state = state;
         }
@@ -60,6 +72,16 @@ namespace BattleShip0
         public FieldButtonState getState()
         {
             return state;
+        }
+
+        public Point GetPosition()
+        {
+            return pos;
+        }
+
+        protected override void OnClick(EventArgs e)
+        {
+            (Parent as Field).FieldButtonClicked(this);
         }
     }
 }

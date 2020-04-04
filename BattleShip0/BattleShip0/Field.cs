@@ -31,14 +31,13 @@ namespace BattleShip0
         Ship curShip; // Current ship to move
         Point curPos; // Current ship position
         bool curRotate; // Current ship rotation
-        List<Ship> ships; // List of the ships on the field 
+        private List<Ship> ships; // List of the ships on the field 
         public Field() : base() {
-          
+           
         }
 
         public void Init(Size size,Player player) 
         {
-          
             this.size = size;
             this.player = player;
             GameInit.setField(this, size, player);
@@ -46,12 +45,13 @@ namespace BattleShip0
             if (player == Player.enemy)
               RandomPutShip();
         }
+        
+        // Inicialization part---------------------------------------------
 
         // Make field empty
         public void Reset()
         {
             // Clear field and
-            
             ships.Clear();
             GameInit.setField(this, size, player);
 
@@ -67,7 +67,8 @@ namespace BattleShip0
 
             }
             var random = new Random();
-            foreach(var ship in GameInit.ships)
+            //var ships =;
+            foreach (var ship in GameInit.GetShips())
             {
                 curShip = ship;
                 for (int i = 0; i < curShip.count; i++)
@@ -84,12 +85,12 @@ namespace BattleShip0
                         if (possible)
                         {
                             PutShip(true);
-                            commit = canCommit();
+                            commit = CanCommit();
                             if (!commit)
                                 PutShip(false);
                             else
                                 // Add ship to curships
-                                ships.Add(curShip);
+                                ships.Add(new Ship(curShip));
                         }
 
                     } while (!(possible && commit));
@@ -153,7 +154,7 @@ namespace BattleShip0
         }
 
         // True if curShip in appropriate place in the field
-        bool canCommit()
+        bool CanCommit()
         {
             UpdateCurShipCells();
 
@@ -198,13 +199,15 @@ namespace BattleShip0
             curShip.cells.Clear();
             for (int i = 0; i < curShip.size; i++)
                 curShip.cells.Add(new Point(curPos.X + i * ToInt(curRotate), curPos.Y + i * ToInt(!curRotate)));
+            // Save copy of cells
+            curShip.SaveCells();
         }
         // Commit position of curShip
         void CommitCurShip()
         {
-            
 
-            if (!canCommit())
+            
+            if (!CanCommit())
             {
                 MessageBox.Show("You can't put " + curShip.name + " ship here");
                 return;
@@ -281,5 +284,81 @@ namespace BattleShip0
             PutShip( true);
 
         }
+
+        public Size GetSize()
+        {
+            return size;
+        }
+
+        // Game part -------------------------------------------------
+
+        // Make shot on this field
+        // Return status of shot
+        public ShotStatus Shot(Point pos)
+        {
+            var button = getFB(pos);
+
+            ShotStatus status = ShotStatus.miss;
+            Ship ship = new Ship();
+            bool skip = false;
+            // Compute shot status
+            if (button.getState() == FieldButtonState.ship)
+            {
+                for (int i = 0; i < ships.Count && !skip; i++)
+                    if (ships[i].cells.Contains(pos))
+                    {
+                        ship = ships[i];
+                        ships[i].cells.Remove(pos);
+                        if (ships[i].cells.Count == 0)
+                        {
+                            ships.Remove(ships[i]);
+
+                            status = ShotStatus.kill;
+                        }
+                        else
+                            status = ShotStatus.hurt;
+                        skip = true;
+
+                    }
+               
+            }
+            else
+                status = ShotStatus.miss;
+
+            // Change FieldButton state
+            var FieldButton = getFB(pos);
+            FieldButtonState state;
+            switch(status){
+                case ShotStatus.kill:
+                    state = FieldButtonState.kill;
+                    foreach (var c in ship.cellsInit)
+                        getFB(c).setState(state);
+                    if (ships.Count == 0)
+                        status = ShotStatus.killEverybody;
+                    break;
+                case ShotStatus.hurt:
+                    state = FieldButtonState.hit;
+                    break;
+                case ShotStatus.miss:
+                    state = FieldButtonState.miss;
+                    break;
+                default:
+                    state = FieldButtonState.blocked;
+                    break;
+            }
+            getFB(pos).setState(state);
+
+            return status;
+            
+        }
+        public void FieldButtonClicked(FieldButton button)
+        {
+            if ( player == Player.enemy)
+            {
+                (Parent as Form1).SendPos(button.GetPosition());
+            }
+        }
     }
+
+    
 }

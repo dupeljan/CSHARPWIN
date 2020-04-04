@@ -10,13 +10,29 @@ using System.Windows.Forms;
 
 namespace BattleShip0
 {
-    enum GameState
+    public enum ShotStatus
+    {
+        miss,
+        hurt,
+        kill,
+        killEverybody
+
+    }
+
+    enum ProgramState
     {
         init = 0,
         game = 1,
         end  = 2
     }
     
+    enum GameState
+    {
+        WaitPlayerChoise,
+        WaitOtherPlayerStatus,
+        WaitOtherPlayerPos
+    }
+
     enum InitState
     {
         notSelected,
@@ -32,21 +48,23 @@ namespace BattleShip0
     {
        
 
+        ProgramState programState; // Program state
         GameState gameState; // Game state
+        OtherPlayer otherPlayer; // Other player pointer
         Size fieldSize = new Size(10,10); // Fied size
        
         public Form1()
         {
             InitializeComponent();
             KeyPreview = true;
-            setGameState(GameState.end);
+            setProgramState(ProgramState.end);
         }
 
 
-        void setGameState(GameState state)
+        void setProgramState(ProgramState state)
         {
             
-            if (state == GameState.init)
+            if (state == ProgramState.init)
             {
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
@@ -61,17 +79,20 @@ namespace BattleShip0
                 // Init buttons for ship chosing
                 GameInit.SetInitButtons(groupBoxInit,fieldAlly);
 
-                gameState = state;
+                programState = state;
             }
-            else if (state == GameState.end)
+            else if (state == ProgramState.end)
             {
                 buttonChangeGameState.Text = "Start";
-                gameState = state;
+                programState = state;
             }
-            else if (state == GameState.game && ShipButton.GetShipsLeft() == 0)
+            else if (state == ProgramState.game && ShipButton.GetShipsLeft() == 0)
             {
                 buttonChangeGameState.Text = "Try again";
-                gameState = state;
+                gameState = GameState.WaitPlayerChoise;
+                otherPlayer = new Bot(Level.easy, fieldEnemy,this);
+
+                programState = state;
             }
 
         }
@@ -86,7 +107,7 @@ namespace BattleShip0
         // Send pressed keys to ally field
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(gameState == GameState.init)
+            if(programState == ProgramState.init)
             {
                // MessageBox.Show(e.KeyChar.ToString());
                 Direction direction;
@@ -124,7 +145,7 @@ namespace BattleShip0
         // Button reset handler
         private void buttonReset_Click(object sender, EventArgs e)
         {
-            if (gameState == GameState.init)
+            if (programState == ProgramState.init)
             {
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
@@ -146,7 +167,66 @@ namespace BattleShip0
 
         private void buttonChangeGameState_Click(object sender, EventArgs e)
         {
-            setGameState((GameState)((( (int) gameState) + 1) % 3));
+            setProgramState((ProgramState)((( (int) programState) + 1) % 3));
+        }
+
+        // Game part
+
+        void setGameState(GameState state)
+        {
+            gameState = state;
+            if (state == GameState.WaitOtherPlayerPos)
+                otherPlayer.SendPos();
+
+            
+        }
+        public void SendPos(Point pos)
+        {
+            if (gameState == GameState.WaitPlayerChoise)
+            {
+                setGameState(GameState.WaitOtherPlayerStatus);
+                otherPlayer.RecevePos(pos);
+                
+            }
+        }
+
+        public void ReceveStatus(ShotStatus shotStatus)
+        {
+            if(gameState == GameState.WaitOtherPlayerStatus)
+            {
+                // handle shot status here
+                MessageBox.Show(shotStatus.ToString());
+                if (shotStatus == ShotStatus.miss)
+                    setGameState(GameState.WaitOtherPlayerPos);
+                else if (shotStatus == ShotStatus.killEverybody)
+                {
+                    MessageBox.Show("You win!");
+                    setProgramState( ProgramState.end);
+                }
+                    
+                else
+                    setGameState(GameState.WaitPlayerChoise);
+            }
+        }
+
+        public void RecevePos(Point pos)
+        {
+            if(gameState == GameState.WaitOtherPlayerPos)
+            {
+                // Handl pos here
+                // compute status
+                var status = fieldAlly.Shot(pos);
+                otherPlayer.ReceveStatus(status);
+                if (status == ShotStatus.miss)
+                    setGameState(GameState.WaitPlayerChoise);
+                else if (status == ShotStatus.killEverybody)
+                {
+                    MessageBox.Show("You lose!");
+                    setProgramState(ProgramState.end);
+                }
+                 else
+                    setGameState(GameState.WaitOtherPlayerPos);
+            }
         }
     }
 }

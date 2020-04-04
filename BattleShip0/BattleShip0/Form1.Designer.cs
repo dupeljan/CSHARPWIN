@@ -34,8 +34,8 @@
             this.labelStatus = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFillRandom = new System.Windows.Forms.Button();
-            this.fieldEnemy = new BattleShip0.Field();
             this.fieldAlly = new BattleShip0.Field();
+            this.fieldEnemy = new BattleShip0.Field();
             this.SuspendLayout();
             // 
             // buttonChangeGameState
@@ -97,15 +97,6 @@
             this.buttonFillRandom.UseVisualStyleBackColor = true;
             this.buttonFillRandom.Click += new System.EventHandler(this.buttonFillRandom_Click);
             // 
-            // fieldEnemy
-            // 
-            this.fieldEnemy.Location = new System.Drawing.Point(33, 37);
-            this.fieldEnemy.Name = "fieldEnemy";
-            this.fieldEnemy.Size = new System.Drawing.Size(292, 222);
-            this.fieldEnemy.TabIndex = 7;
-            this.fieldEnemy.TabStop = false;
-            this.fieldEnemy.Text = "field1";
-            // 
             // fieldAlly
             // 
             this.fieldAlly.Location = new System.Drawing.Point(462, 37);
@@ -113,7 +104,16 @@
             this.fieldAlly.Size = new System.Drawing.Size(292, 222);
             this.fieldAlly.TabIndex = 8;
             this.fieldAlly.TabStop = false;
-            this.fieldAlly.Text = "field2";
+            this.fieldAlly.Text = "Ally field";
+            // 
+            // fieldEnemy
+            // 
+            this.fieldEnemy.Location = new System.Drawing.Point(33, 37);
+            this.fieldEnemy.Name = "fieldEnemy";
+            this.fieldEnemy.Size = new System.Drawing.Size(292, 222);
+            this.fieldEnemy.TabIndex = 7;
+            this.fieldEnemy.TabStop = false;
+            this.fieldEnemy.Text = "Enemy field";
             // 
             // Form1
             // 
