@@ -34,6 +34,8 @@
             this.groupBoxInit = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.labelStatus = new System.Windows.Forms.Label();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.buttonFillRandom = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // groupBoxEnemy
@@ -93,11 +95,33 @@
             this.labelStatus.TabIndex = 4;
             this.labelStatus.Text = "init";
             // 
+            // buttonReset
+            // 
+            this.buttonReset.Location = new System.Drawing.Point(1069, 352);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(75, 23);
+            this.buttonReset.TabIndex = 5;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // buttonFillRandom
+            // 
+            this.buttonFillRandom.Location = new System.Drawing.Point(941, 8);
+            this.buttonFillRandom.Name = "buttonFillRandom";
+            this.buttonFillRandom.Size = new System.Drawing.Size(132, 23);
+            this.buttonFillRandom.TabIndex = 6;
+            this.buttonFillRandom.Text = "Fill random";
+            this.buttonFillRandom.UseVisualStyleBackColor = true;
+            this.buttonFillRandom.Click += new System.EventHandler(this.buttonFillRandom_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1145, 460);
+            this.Controls.Add(this.buttonFillRandom);
+            this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBoxInit);
@@ -120,6 +144,8 @@
         private System.Windows.Forms.GroupBox groupBoxInit;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelStatus;
+        private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.Button buttonFillRandom;
     }
 }
 

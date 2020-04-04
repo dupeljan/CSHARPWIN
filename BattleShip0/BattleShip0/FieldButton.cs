@@ -17,6 +17,11 @@ namespace BattleShip0
         kill,
         blended
     }
+    enum ColorMode
+    {
+        silent,
+        normal
+    }
     class FieldButton : Button
     {
         public static Dictionary<FieldButtonState, Color> colors =
@@ -32,19 +37,23 @@ namespace BattleShip0
 
         Point pos; // Button pos in field
         FieldButtonState state;
-        public FieldButton(Point pos, Point buttonShift,int fieldSize, FieldButtonState state= FieldButtonState.blocked) : base()
+        ColorMode mode;
+        public FieldButton(Point pos, Point buttonShift, int fieldSize, 
+            FieldButtonState state = FieldButtonState.blocked, ColorMode mode = ColorMode.normal) : base()
         {
             this.pos = pos;
            
             Height = fieldSize;
             Width = fieldSize;
             Location = new Point(buttonShift.X + pos.Y * Width, buttonShift.Y + pos.X * Height );
+            this.mode = mode;
             setState(state);
         }
 
         public void setState(FieldButtonState state)
         {
-            this.BackColor = colors[state];
+            if (mode == ColorMode.normal || state == FieldButtonState.blocked)
+                this.BackColor = colors[state];
             this.state = state;
         }
 

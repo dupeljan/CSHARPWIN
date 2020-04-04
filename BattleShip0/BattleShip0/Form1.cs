@@ -59,8 +59,8 @@ namespace BattleShip0
                 allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
 
                 // Init buttons for ship chosing
-
                 GameInit.SetInitButtons(groupBoxInit,allyField);
+
                 gameState = state;
             }
             else if (state == GameState.end)
@@ -121,7 +121,28 @@ namespace BattleShip0
 
         }
 
-     
+        // Button reset handler
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            if (gameState == GameState.init)
+            {
+                buttonChangeGameState.Text = "Begin battle!";
+                setStatusLabel();
+
+                // Init ally field
+                allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
+
+                // Init buttons for ship chosing
+                GameInit.SetInitButtons(groupBoxInit, allyField);
+
+            }
+        }
+
+        private void buttonFillRandom_Click(object sender, EventArgs e)
+        {
+            allyField.RandomPutShip();
+        }
+
         private void buttonChangeGameState_Click(object sender, EventArgs e)
         {
             setGameState((GameState)((( (int) gameState) + 1) % 3));

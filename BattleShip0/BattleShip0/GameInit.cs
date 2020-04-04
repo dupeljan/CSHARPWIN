@@ -37,8 +37,9 @@ namespace BattleShip0
         static Point buttonFieldShift = new Point(5, 15);
         static int fieldSize=30;
 
+        
         // Ship sizes and count
-        static List<Ship> ships = new List<Ship>
+        public static List<Ship> ships = new List<Ship>
         {
              new Ship("Biggest!",4,1),
              new Ship("Big one",3,2),
@@ -53,6 +54,10 @@ namespace BattleShip0
                 box.Controls.Remove(box.Controls[i]);
         }
 
+        // fill 
+        static int FillRandom() {
+            return 0;
+        }
         // Return list of init buttons
         //  update status - pdate form status method pointer
         public static void SetInitButtons(GroupBox box,Field field) 
@@ -74,16 +79,26 @@ namespace BattleShip0
             box.Size = new Size(buttonFieldShift.X + size.Width * fieldSize, buttonFieldShift.Y + size.Height* fieldSize);
 
             // Set field type
+            // and mode
             FieldButtonState type;
+            ColorMode mode;
             if (player == Player.ally)
+            {
+                mode = ColorMode.normal;
                 type = FieldButtonState.empty;
+            }
+
             else
+            {
+                mode = ColorMode.silent;
                 type = FieldButtonState.blocked;
+
+            }
 
             // Add buttons to control
             for (int i = 0; i < size.Width; i++)
                 for (int j = 0; j < size.Height; j++)
-                    box.Controls.Add(new FieldButton(new Point(i, j), buttonFieldShift, fieldSize,type));
+                    box.Controls.Add(new FieldButton(new Point(i, j), buttonFieldShift, fieldSize,type,mode));
         }
 
     }

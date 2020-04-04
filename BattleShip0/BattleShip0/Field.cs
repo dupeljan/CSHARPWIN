@@ -36,6 +36,43 @@ namespace BattleShip0
             this.player = player;
             GameInit.setField(box, size, player);
             ships = new List<Ship>();
+            if (player == Player.enemy)
+              RandomPutShip();
+        }
+
+        // Fill field in random way
+        public void RandomPutShip()
+        {
+            var random = new Random();
+            foreach(var ship in GameInit.ships)
+            {
+                curShip = ship;
+                for (int i = 0; i < curShip.count; i++)
+                {
+                   
+                    bool possible, commit;
+                    do
+                    {
+                        curPos = new Point(random.Next(0, size.Width - 1), random.Next(0, size.Height - 1));
+                        curRotate = random.Next(10) % 2 == 0;
+
+                        possible = PossiblePosition(curPos, curRotate);
+                        commit = false;
+                        if (possible)
+                        {
+                            PutShip(true);
+                            commit = canCommit();
+                            if (!commit)
+                                PutShip(false);
+                            else
+                                // Add ship to curships
+                                ships.Add(curShip);
+                        }
+
+                    } while (!(possible && commit));
+                }
+               
+            }
         }
 
         // Put ship into field
@@ -43,7 +80,7 @@ namespace BattleShip0
         // with rotation or not.
         // If ! fill then ship positions
         // will be cleaned
-        void PutShip(Point pos,bool rotated,bool fill)
+        void PutShip(bool fill)
         {
             FieldButtonState locState;
             if (fill)
@@ -51,9 +88,9 @@ namespace BattleShip0
             else
                 locState = FieldButtonState.empty;
 
-            var locPos = this.size.Height * pos.X + pos.Y;
+            var locPos = this.size.Height * curPos.X + curPos.Y;
             int delta;
-            if (rotated)
+            if (curRotate)
                 delta = this.size.Height;
             else
                 delta = 1;
@@ -81,7 +118,7 @@ namespace BattleShip0
             curShip = ship;
             curPos = new Point(0, 0);
             curRotate = false;
-            PutShip(curPos, curRotate,true);
+            PutShip(true);
         }
 
         FieldButton getFB(Point pos)
@@ -95,6 +132,8 @@ namespace BattleShip0
         // True if curShip in appropriate place in the field
         bool canCommit()
         {
+            UpdateCurShipCells();
+
             var res = true;
             for (int i = 0; i < curShip.size && res; i++)
             {
@@ -115,20 +154,32 @@ namespace BattleShip0
             return res;
         }
 
-        int toInt(bool x)
+        int ToInt(bool x)
         {
             if (x)
                 return 1;
             return 0;
         }
 
+        bool ToBool(int x)
+        {
+            if (x != 0)
+                return true;
+            return false;
+        }
+
+        // Change ship cells 
+        // depending on curPos and curRot
+        void UpdateCurShipCells()
+        {
+            curShip.cells.Clear();
+            for (int i = 0; i < curShip.size; i++)
+                curShip.cells.Add(new Point(curPos.X + i * ToInt(curRotate), curPos.Y + i * ToInt(!curRotate)));
+        }
         // Commit position of curShip
         void CommitCurShip()
         {
-            // Add cells to curShip
-            curShip.cells.Clear();
-            for (int i = 0; i < curShip.size; i++)
-                curShip.cells.Add(new Point(curPos.X + i * toInt(curRotate), curPos.Y + i * toInt(!curRotate)));
+            
 
             if (!canCommit())
             {
@@ -144,6 +195,17 @@ namespace BattleShip0
             
         }
 
+        // return true if curShip appearing
+        // in the pos and rot is possible
+        bool PossiblePosition(Point pos,bool rot)
+        {
+            return (!
+               (pos.X < 0 || pos.Y < 0 ||
+                pos.X >= size.Width || pos.Y >= size.Height ||
+               !rot && size.Height - pos.Y < curShip.size ||
+               rot && size.Width - pos.X < curShip.size)
+             ); 
+        }
          // Move current ship on the field
         public void MoveCurShip(Direction direction)
         {
@@ -159,23 +221,23 @@ namespace BattleShip0
             }
 
             // Clean previous move
-            PutShip(curPos, curRotate, false);
+            PutShip( false);
 
             Point newPos = new Point(curPos.X, curPos.Y);
             bool newRotate = curRotate;
             // Change ship position
             switch (direction) {
                 case Direction.up:
-                    newPos.X = Math.Max(0, curPos.X - 1);
+                    newPos.X = curPos.X - 1;
                     break;
                 case Direction.down:
-                    newPos.X = Math.Min(size.Width - 1, curPos.X + 1);
+                    newPos.X =  curPos.X + 1;
                     break;
                 case Direction.left:
-                    newPos.Y = Math.Max(0, curPos.Y - 1);
+                    newPos.Y = curPos.Y - 1;
                     break;
                 case Direction.right:
-                    newPos.Y = Math.Min(size.Height - 1, curPos.Y + 1);
+                    newPos.Y = curPos.Y + 1;
                     break;
                 case Direction.rotate:
                     newRotate = !curRotate;
@@ -183,10 +245,7 @@ namespace BattleShip0
             }
 
             // Constrains to ship position
-            if (! 
-               (!newRotate && size.Height - newPos.Y < curShip.size ||
-               newRotate && size.Width - newPos.X < curShip.size)
-               )
+            if ( PossiblePosition(newPos,newRotate))
             {
                 // Set position
                 curPos = newPos;
@@ -196,7 +255,7 @@ namespace BattleShip0
         
 
             // Draw new ship
-            PutShip(curPos, curRotate, true);
+            PutShip( true);
 
         }
     }
