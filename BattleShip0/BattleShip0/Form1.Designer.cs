@@ -28,33 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBoxEnemy = new System.Windows.Forms.GroupBox();
-            this.groupBoxAlly = new System.Windows.Forms.GroupBox();
             this.buttonChangeGameState = new System.Windows.Forms.Button();
             this.groupBoxInit = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.labelStatus = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFillRandom = new System.Windows.Forms.Button();
+            this.fieldEnemy = new BattleShip0.Field();
+            this.fieldAlly = new BattleShip0.Field();
             this.SuspendLayout();
-            // 
-            // groupBoxEnemy
-            // 
-            this.groupBoxEnemy.Location = new System.Drawing.Point(33, 37);
-            this.groupBoxEnemy.Name = "groupBoxEnemy";
-            this.groupBoxEnemy.Size = new System.Drawing.Size(374, 299);
-            this.groupBoxEnemy.TabIndex = 0;
-            this.groupBoxEnemy.TabStop = false;
-            this.groupBoxEnemy.Text = "Enemy field";
-            // 
-            // groupBoxAlly
-            // 
-            this.groupBoxAlly.Location = new System.Drawing.Point(475, 37);
-            this.groupBoxAlly.Name = "groupBoxAlly";
-            this.groupBoxAlly.Size = new System.Drawing.Size(374, 299);
-            this.groupBoxAlly.TabIndex = 1;
-            this.groupBoxAlly.TabStop = false;
-            this.groupBoxAlly.Text = "Ally field";
             // 
             // buttonChangeGameState
             // 
@@ -115,19 +97,37 @@
             this.buttonFillRandom.UseVisualStyleBackColor = true;
             this.buttonFillRandom.Click += new System.EventHandler(this.buttonFillRandom_Click);
             // 
+            // fieldEnemy
+            // 
+            this.fieldEnemy.Location = new System.Drawing.Point(33, 37);
+            this.fieldEnemy.Name = "fieldEnemy";
+            this.fieldEnemy.Size = new System.Drawing.Size(292, 222);
+            this.fieldEnemy.TabIndex = 7;
+            this.fieldEnemy.TabStop = false;
+            this.fieldEnemy.Text = "field1";
+            // 
+            // fieldAlly
+            // 
+            this.fieldAlly.Location = new System.Drawing.Point(462, 37);
+            this.fieldAlly.Name = "fieldAlly";
+            this.fieldAlly.Size = new System.Drawing.Size(292, 222);
+            this.fieldAlly.TabIndex = 8;
+            this.fieldAlly.TabStop = false;
+            this.fieldAlly.Text = "field2";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1145, 460);
+            this.Controls.Add(this.fieldAlly);
+            this.Controls.Add(this.fieldEnemy);
             this.Controls.Add(this.buttonFillRandom);
             this.Controls.Add(this.buttonReset);
             this.Controls.Add(this.labelStatus);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBoxInit);
             this.Controls.Add(this.buttonChangeGameState);
-            this.Controls.Add(this.groupBoxAlly);
-            this.Controls.Add(this.groupBoxEnemy);
             this.Name = "Form1";
             this.Text = "Form1";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
@@ -137,15 +137,14 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox groupBoxEnemy;
-        private System.Windows.Forms.GroupBox groupBoxAlly;
         private System.Windows.Forms.Button buttonChangeGameState;
         private System.Windows.Forms.GroupBox groupBoxInit;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.Button buttonFillRandom;
+        private Field fieldEnemy;
+        private Field fieldAlly;
     }
 }
 

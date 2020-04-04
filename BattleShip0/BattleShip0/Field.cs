@@ -5,6 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.Design;
+
+
 
 namespace BattleShip0
 {
@@ -18,39 +21,50 @@ namespace BattleShip0
         commit = 5
     }
 
-    
 
-    class Field
+ 
+    class Field : GroupBox
     {
-        GroupBox box;
+        
         Size size;
         Player player;
         Ship curShip; // Current ship to move
         Point curPos; // Current ship position
         bool curRotate; // Current ship rotation
         List<Ship> ships; // List of the ships on the field 
-        public Field(GroupBox box,Size size,Player player)
+        public Field() : base() {
+          
+        }
+
+        public void Init(Size size,Player player) 
         {
-            this.box = box;
+          
             this.size = size;
             this.player = player;
-            GameInit.setField(box, size, player);
+            GameInit.setField(this, size, player);
             ships = new List<Ship>();
             if (player == Player.enemy)
               RandomPutShip();
         }
 
+        // Make field empty
+        public void Reset()
+        {
+            // Clear field and
+            
+            ships.Clear();
+            GameInit.setField(this, size, player);
+
+        }
         // Fill field in random way
         public void RandomPutShip()
         {
             if (player == Player.ally)
             {
-                // Clear field and
-                // block shipButtons 
-                ships.Clear();
+                Reset();
+                // block shipButtons
                 ShipButton.ResetShipLeftToZero();
-                GameInit.setField(box, size, player);
-                
+
             }
             var random = new Random();
             foreach(var ship in GameInit.ships)
@@ -107,12 +121,12 @@ namespace BattleShip0
             {
                 var newLocalState = locState;
                 // if it's blended
-                if (fill && ((FieldButton)box.Controls[i]).getState() == FieldButtonState.ship)
+                if (fill && ((FieldButton)this.Controls[i]).getState() == FieldButtonState.ship)
                     newLocalState = FieldButtonState.blended;
-                if (!fill && ((FieldButton)box.Controls[i]).getState() == FieldButtonState.blended)
+                if (!fill && ((FieldButton)this.Controls[i]).getState() == FieldButtonState.blended)
                     newLocalState = FieldButtonState.ship;
 
-                ((FieldButton)box.Controls[i]).setState(newLocalState);
+                ((FieldButton)this.Controls[i]).setState(newLocalState);
 
             }
         }
@@ -135,7 +149,7 @@ namespace BattleShip0
             if (size.Width <= pos.X || size.Height <= pos.Y
                 || pos.X < 0 || pos.Y < 0)
                 return null;
-            return (FieldButton)box.Controls[this.size.Height * pos.X + pos.Y];
+            return (FieldButton)this.Controls[this.size.Height * pos.X + pos.Y];
         }
 
         // True if curShip in appropriate place in the field

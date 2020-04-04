@@ -34,7 +34,6 @@ namespace BattleShip0
 
         GameState gameState; // Game state
         Size fieldSize = new Size(10,10); // Fied size
-        Field enemyField, allyField; // Fields  instances
        
         public Form1()
         {
@@ -51,15 +50,16 @@ namespace BattleShip0
             {
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
-                
-                
+
+
 
                 // Init field
-                enemyField = new Field(groupBoxEnemy, fieldSize,Player.enemy);
-                allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
+                fieldEnemy.Init(fieldSize, Player.enemy);
+                fieldAlly.Init(fieldSize, Player.ally);
+
 
                 // Init buttons for ship chosing
-                GameInit.SetInitButtons(groupBoxInit,allyField);
+                GameInit.SetInitButtons(groupBoxInit,fieldAlly);
 
                 gameState = state;
             }
@@ -114,7 +114,7 @@ namespace BattleShip0
                         return;
                 }
                 
-                allyField.MoveCurShip(direction);
+                fieldAlly.MoveCurShip(direction);
 
                 setStatusLabel();
             }
@@ -129,19 +129,19 @@ namespace BattleShip0
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
 
-                
-                // Init ally field
-                allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
+
+                // Reset ally field
+                fieldAlly.Reset();
 
                 // Init buttons for ship chosing
-                GameInit.SetInitButtons(groupBoxInit, allyField);
+                GameInit.SetInitButtons(groupBoxInit, fieldAlly);
                 ShipButton.active = false;
             }
         }
 
         private void buttonFillRandom_Click(object sender, EventArgs e)
         {
-            allyField.RandomPutShip();
+            fieldAlly.RandomPutShip();
         }
 
         private void buttonChangeGameState_Click(object sender, EventArgs e)
