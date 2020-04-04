@@ -43,6 +43,15 @@ namespace BattleShip0
         // Fill field in random way
         public void RandomPutShip()
         {
+            if (player == Player.ally)
+            {
+                // Clear field and
+                // block shipButtons 
+                ships.Clear();
+                ShipButton.ResetShipLeftToZero();
+                GameInit.setField(box, size, player);
+                
+            }
             var random = new Random();
             foreach(var ship in GameInit.ships)
             {

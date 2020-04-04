@@ -26,6 +26,10 @@ namespace BattleShip0
             shipLeft -= 1;
         }
 
+        public static void ResetShipLeftToZero()
+        {
+            shipLeft = 0;
+        }
         // Dynamic part
         int sHeight = 50;
         int sWidth = 120;
@@ -60,7 +64,7 @@ namespace BattleShip0
             
             
             // If buttons unblocked and ships count > 0
-            if( !active && count != 0)
+            if( !active && count != 0 && shipLeft != 0)
             {
                 // Decrese count of ships
                 count -= 1;
