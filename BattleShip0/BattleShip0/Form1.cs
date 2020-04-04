@@ -129,12 +129,13 @@ namespace BattleShip0
                 buttonChangeGameState.Text = "Begin battle!";
                 setStatusLabel();
 
+                
                 // Init ally field
                 allyField = new Field(groupBoxAlly, fieldSize, Player.ally);
 
                 // Init buttons for ship chosing
                 GameInit.SetInitButtons(groupBoxInit, allyField);
-
+                ShipButton.active = false;
             }
         }
 

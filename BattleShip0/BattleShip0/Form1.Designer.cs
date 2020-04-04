@@ -45,7 +45,7 @@
             this.groupBoxEnemy.Size = new System.Drawing.Size(374, 299);
             this.groupBoxEnemy.TabIndex = 0;
             this.groupBoxEnemy.TabStop = false;
-            this.groupBoxEnemy.Text = "groupBox1";
+            this.groupBoxEnemy.Text = "Enemy field";
             // 
             // groupBoxAlly
             // 
@@ -54,7 +54,7 @@
             this.groupBoxAlly.Size = new System.Drawing.Size(374, 299);
             this.groupBoxAlly.TabIndex = 1;
             this.groupBoxAlly.TabStop = false;
-            this.groupBoxAlly.Text = "groupBox1";
+            this.groupBoxAlly.Text = "Ally field";
             // 
             // buttonChangeGameState
             // 
