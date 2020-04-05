@@ -11,8 +11,11 @@ namespace BattleShip0
 {
     class Server : RemotePlayer
     {
-     
-         public Server(Form1 arbitour) : base(arbitour)
+        public Server(Form1 arbitour) : base(arbitour)
+        {
+
+        }
+         public void WaitConnection()
         {
 
             // Get Host IP Address that is used to establish a connection  
@@ -37,7 +40,7 @@ namespace BattleShip0
                 sender = listener.Accept();
                 Console.WriteLine("Connect!");
 
-               
+                arbitor.setGameState(GameState.WaitPlayerChoise);
             }
             catch (Exception e)
             {

@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -26,8 +27,9 @@ namespace BattleShip0
         end  = 2
     }
     
-    enum GameState
+    public enum GameState
     {
+        WaitConnection,
         WaitPlayerChoise,
         WaitOtherPlayerStatus,
         WaitOtherPlayerPos
@@ -114,9 +116,11 @@ namespace BattleShip0
             }
             else if(gameMode == GameMode.server)
             {
+                setGameState(GameState.WaitConnection);
                 otherPlayer = new Server(this);
+                var thr = new Thread(new ThreadStart((otherPlayer as Server).WaitConnection));
+                thr.Start();
                 // Server is first player
-                setGameState(GameState.WaitPlayerChoise);
 
             }
             else if(gameMode == GameMode.client)
@@ -225,13 +229,20 @@ namespace BattleShip0
         // Game part
 
      
-        void setGameState(GameState state)
+        public void setGameState(GameState state)
         {
             gameState = state;
-            if (state == GameState.WaitOtherPlayerPos)
-                otherPlayer.SendPos();
-            else if (state == GameState.WaitOtherPlayerStatus)
-                otherPlayer.SendStatus();
+            if ( state == GameState.WaitOtherPlayerPos ||
+                   state == GameState.WaitOtherPlayerStatus)
+            {
+                Thread thr;
+                if (state == GameState.WaitOtherPlayerPos)
+                    thr = new Thread( new ThreadStart( otherPlayer.SendPos ));
+                else //if (state == GameState.WaitOtherPlayerStatus)
+                    thr = new Thread( new ThreadStart(otherPlayer.SendStatus));
+                thr.Start();
+            }
+           
             
         }
 
