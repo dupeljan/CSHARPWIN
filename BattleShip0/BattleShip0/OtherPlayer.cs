@@ -14,5 +14,6 @@ namespace BattleShip0
         
         void ReceveStatus(ShotStatus shotStatus);
         void SendPos();
+        void SendStatus();
     }
 }

@@ -61,39 +61,56 @@ namespace BattleShip0
         }
 
 
+        void InitProgramm()
+        {
+            buttonChangeGameState.Text = "Begin battle!";
+            setStatusLabel();
+
+            // Open addition buttons 
+            buttonReset.Visible = true;
+            buttonFillRandom.Visible = true;
+
+            // Init field
+            fieldEnemy.Init(fieldSize, Player.enemy);
+            fieldAlly.Init(fieldSize, Player.ally);
+
+
+            // Init buttons for ship chosing
+            GameInit.SetInitButtons(groupBoxInit, fieldAlly);
+        }
+
+        void EndGame()
+        {
+            buttonChangeGameState.Text = "Start";
+        }
+
+        void BeginGame()
+        {
+            buttonChangeGameState.Text = "Try again";
+            buttonReset.Visible = false;
+            buttonFillRandom.Visible = false;
+            gameState = GameState.WaitPlayerChoise;
+            otherPlayer = new Bot(Level.easy, fieldEnemy, this);
+        }
+
         void setProgramState(ProgramState state)
         {
             
             if (state == ProgramState.init)
             {
-                buttonChangeGameState.Text = "Begin battle!";
-                setStatusLabel();
-
-
-
-                // Init field
-                fieldEnemy.Init(fieldSize, Player.enemy);
-                fieldAlly.Init(fieldSize, Player.ally);
-
-
-                // Init buttons for ship chosing
-                GameInit.SetInitButtons(groupBoxInit,fieldAlly);
-
-                programState = state;
+                InitProgramm();
             }
             else if (state == ProgramState.end)
             {
-                buttonChangeGameState.Text = "Start";
-                programState = state;
+                EndGame();
             }
             else if (state == ProgramState.game && ShipButton.GetShipsLeft() == 0)
             {
-                buttonChangeGameState.Text = "Try again";
-                gameState = GameState.WaitPlayerChoise;
-                otherPlayer = new Bot(Level.easy, fieldEnemy,this);
 
-                programState = state;
+                BeginGame();
             }
+            programState = state;
+
 
         }
 
@@ -177,16 +194,16 @@ namespace BattleShip0
             gameState = state;
             if (state == GameState.WaitOtherPlayerPos)
                 otherPlayer.SendPos();
-
+            else if (state == GameState.WaitOtherPlayerStatus)
+                otherPlayer.SendStatus();
             
         }
         public void SendPos(Point pos)
         {
             if (gameState == GameState.WaitPlayerChoise)
             {
-                setGameState(GameState.WaitOtherPlayerStatus);
                 otherPlayer.RecevePos(pos);
-                
+                setGameState(GameState.WaitOtherPlayerStatus);
             }
         }
 

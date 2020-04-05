@@ -20,6 +20,7 @@ namespace BattleShip0
         List<Point> positons; // Not shooten positions
         Field field;
         Form1 arbitrator;
+        ShotStatus lastShotStatus; // Status of last shot
         
         Random random = new Random();
         public Bot(Level level,Field field,Form1 arbitrator)
@@ -45,13 +46,18 @@ namespace BattleShip0
             positons.Remove(pos);
             arbitrator.RecevePos(pos);
         }
-        
+
+        public void SendStatus()
+        {
+            // Send status to atrbitour
+            arbitrator.ReceveStatus(lastShotStatus);
+
+        }
+
         // Receve pos and send status and new pos to arbitr
         public void RecevePos(Point pos)
         {
-            var status = field.Shot(pos);
-            // Send status to atrbitour
-            arbitrator.ReceveStatus(status);
+            lastShotStatus = field.Shot(pos);
         }
 
         public void ReceveStatus(ShotStatus status)

@@ -34,13 +34,14 @@
             this.labelStatus = new System.Windows.Forms.Label();
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFillRandom = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.fieldAlly = new BattleShip0.Field();
             this.fieldEnemy = new BattleShip0.Field();
             this.SuspendLayout();
             // 
             // buttonChangeGameState
             // 
-            this.buttonChangeGameState.Location = new System.Drawing.Point(893, 394);
+            this.buttonChangeGameState.Location = new System.Drawing.Point(903, 418);
             this.buttonChangeGameState.Name = "buttonChangeGameState";
             this.buttonChangeGameState.Size = new System.Drawing.Size(217, 54);
             this.buttonChangeGameState.TabIndex = 2;
@@ -60,28 +61,30 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Roboto", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(889, 355);
+            this.label1.Font = new System.Drawing.Font("Viner Hand ITC", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label1.Location = new System.Drawing.Point(426, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(65, 20);
+            this.label1.Size = new System.Drawing.Size(126, 45);
             this.label1.TabIndex = 0;
             this.label1.Text = "Status:";
             // 
             // labelStatus
             // 
             this.labelStatus.AutoSize = true;
-            this.labelStatus.Font = new System.Drawing.Font("Roboto", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStatus.Location = new System.Drawing.Point(960, 355);
+            this.labelStatus.Font = new System.Drawing.Font("Viner Hand ITC", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelStatus.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.labelStatus.Location = new System.Drawing.Point(552, 0);
             this.labelStatus.Name = "labelStatus";
-            this.labelStatus.Size = new System.Drawing.Size(35, 20);
+            this.labelStatus.Size = new System.Drawing.Size(75, 45);
             this.labelStatus.TabIndex = 4;
             this.labelStatus.Text = "init";
             // 
             // buttonReset
             // 
-            this.buttonReset.Location = new System.Drawing.Point(1069, 352);
+            this.buttonReset.Location = new System.Drawing.Point(1076, 356);
             this.buttonReset.Name = "buttonReset";
-            this.buttonReset.Size = new System.Drawing.Size(75, 23);
+            this.buttonReset.Size = new System.Drawing.Size(63, 56);
             this.buttonReset.TabIndex = 5;
             this.buttonReset.Text = "Reset";
             this.buttonReset.UseVisualStyleBackColor = true;
@@ -89,17 +92,28 @@
             // 
             // buttonFillRandom
             // 
-            this.buttonFillRandom.Location = new System.Drawing.Point(941, 8);
+            this.buttonFillRandom.Location = new System.Drawing.Point(998, 356);
             this.buttonFillRandom.Name = "buttonFillRandom";
-            this.buttonFillRandom.Size = new System.Drawing.Size(132, 23);
+            this.buttonFillRandom.Size = new System.Drawing.Size(72, 56);
             this.buttonFillRandom.TabIndex = 6;
             this.buttonFillRandom.Text = "Fill random";
             this.buttonFillRandom.UseVisualStyleBackColor = true;
             this.buttonFillRandom.Click += new System.EventHandler(this.buttonFillRandom_Click);
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Viner Hand ITC", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.label2.Location = new System.Drawing.Point(1, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(193, 45);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "ButtleShip!";
+            // 
             // fieldAlly
             // 
-            this.fieldAlly.Location = new System.Drawing.Point(462, 37);
+            this.fieldAlly.Location = new System.Drawing.Point(464, 48);
             this.fieldAlly.Name = "fieldAlly";
             this.fieldAlly.Size = new System.Drawing.Size(292, 222);
             this.fieldAlly.TabIndex = 8;
@@ -108,7 +122,7 @@
             // 
             // fieldEnemy
             // 
-            this.fieldEnemy.Location = new System.Drawing.Point(33, 37);
+            this.fieldEnemy.Location = new System.Drawing.Point(34, 48);
             this.fieldEnemy.Name = "fieldEnemy";
             this.fieldEnemy.Size = new System.Drawing.Size(292, 222);
             this.fieldEnemy.TabIndex = 7;
@@ -119,7 +133,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1145, 460);
+            this.ClientSize = new System.Drawing.Size(1173, 493);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.fieldAlly);
             this.Controls.Add(this.fieldEnemy);
             this.Controls.Add(this.buttonFillRandom);
@@ -129,7 +144,7 @@
             this.Controls.Add(this.groupBoxInit);
             this.Controls.Add(this.buttonChangeGameState);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "BattleShip by @dupeljan";
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Form1_KeyPress);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -145,6 +160,7 @@
         private System.Windows.Forms.Button buttonFillRandom;
         private Field fieldEnemy;
         private Field fieldAlly;
+        private System.Windows.Forms.Label label2;
     }
 }
 
