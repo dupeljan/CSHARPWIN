@@ -363,6 +363,48 @@ namespace BattleShip0
             
         }
 
+        void FindComleteShip(List<Point> points)
+        {
+            if (points.Count == 0)
+                throw new Exception("Index out of range");
+            var skip = false;
+            var head = points[0];
+            var pos = new Point();
+            var direction = new Point();
+            var directions = new List<Point>
+            {
+                new Point(0,-1),
+                new Point(0, 1),
+                new Point(-1,0),
+                new Point(1, 0)
+            };
+            // Try to find other ship 
+            foreach(var p in directions)
+            {
+                pos = new Point(head.X + p.X, head.Y + p.Y);
+                var b = getFB(pos);
+                if ( b != null && b.getState() == FieldButtonState.hit)
+                {
+                    direction = p;
+                    skip = true;
+                    break;
+                }
+            }
+            // Ship is size 1
+            if (!skip)
+                return;
+            // Try to find other tail
+            FieldButton cur; 
+            do
+            {
+                points.Add(pos);
+                pos.X += direction.X;
+                pos.Y += direction.Y;
+                cur = getFB(pos);
+            }
+            while ( cur != null && cur.getState() == FieldButtonState.hit);                    
+                
+        }
         // Visualize shot on enemy field
         public void Shot(Point pos,ShotStatus shotStatus)
         {
@@ -371,17 +413,22 @@ namespace BattleShip0
                 throw new ConstraintException("Can't view a shot on the ally field");
             }
             FieldButtonState state;
+            var buttonsPos = new List<Point>();
+            buttonsPos.Add(pos);
             if (shotStatus == ShotStatus.miss)
                 state = FieldButtonState.miss;
             else if (shotStatus == ShotStatus.hurt)
                 state = FieldButtonState.hit;
-            else if (shotStatus == ShotStatus.kill)
+            else if (shotStatus == ShotStatus.kill ||
+                     shotStatus == ShotStatus.killEverybody )
+            {
                 state = FieldButtonState.kill;
-            else if (shotStatus == ShotStatus.killEverybody)
-                state = FieldButtonState.kill;
+                FindComleteShip(buttonsPos);
+            }
             else
                 state = FieldButtonState.blocked;
-            getFB(pos).setState(state);
+            foreach(var p in buttonsPos)
+                getFB(p).setState(state);
 
         }
         public void FieldButtonClicked(FieldButton button)

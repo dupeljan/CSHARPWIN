@@ -220,10 +220,11 @@ namespace BattleShip0
         {
             if(gameState == GameState.WaitOtherPlayerStatus)
             {
-                // handle shot status here
-                MessageBox.Show(shotStatus.ToString());
+                
                 // View shot on field
                 fieldEnemy.Shot(lastShotPos, shotStatus);
+                // handle shot status here
+                MessageBox.Show(shotStatus.ToString());
 
                 if (shotStatus == ShotStatus.miss)
                     setGameState(GameState.WaitOtherPlayerPos);
