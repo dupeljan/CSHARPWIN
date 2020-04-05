@@ -35,7 +35,10 @@
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFillRandom = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
-            this.fieldEnemyAlly = new BattleShip0.Field();
+            this.buttonConnect = new System.Windows.Forms.Button();
+            this.buttonCreate = new System.Windows.Forms.Button();
+            this.buttonBot = new System.Windows.Forms.Button();
+            this.textBoxIpAddress = new System.Windows.Forms.TextBox();
             this.fieldAlly = new BattleShip0.Field();
             this.fieldEnemy = new BattleShip0.Field();
             this.SuspendLayout();
@@ -112,14 +115,43 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "ButtleShip!";
             // 
-            // fieldEnemyAlly
+            // buttonConnect
             // 
-            this.fieldEnemyAlly.Location = new System.Drawing.Point(1159, 48);
-            this.fieldEnemyAlly.Name = "fieldEnemyAlly";
-            this.fieldEnemyAlly.Size = new System.Drawing.Size(292, 222);
-            this.fieldEnemyAlly.TabIndex = 10;
-            this.fieldEnemyAlly.TabStop = false;
-            this.fieldEnemyAlly.Text = "Ally field";
+            this.buttonConnect.Location = new System.Drawing.Point(45, 473);
+            this.buttonConnect.Name = "buttonConnect";
+            this.buttonConnect.Size = new System.Drawing.Size(98, 35);
+            this.buttonConnect.TabIndex = 10;
+            this.buttonConnect.Text = "Connect";
+            this.buttonConnect.UseVisualStyleBackColor = true;
+            this.buttonConnect.Click += new System.EventHandler(this.buttonConnect_Click);
+            // 
+            // buttonCreate
+            // 
+            this.buttonCreate.Location = new System.Drawing.Point(264, 473);
+            this.buttonCreate.Name = "buttonCreate";
+            this.buttonCreate.Size = new System.Drawing.Size(149, 35);
+            this.buttonCreate.TabIndex = 11;
+            this.buttonCreate.Text = "Create shared game";
+            this.buttonCreate.UseVisualStyleBackColor = true;
+            this.buttonCreate.Click += new System.EventHandler(this.buttonCreate_Click);
+            // 
+            // buttonBot
+            // 
+            this.buttonBot.Location = new System.Drawing.Point(434, 473);
+            this.buttonBot.Name = "buttonBot";
+            this.buttonBot.Size = new System.Drawing.Size(98, 35);
+            this.buttonBot.TabIndex = 12;
+            this.buttonBot.Text = "Play vs bot";
+            this.buttonBot.UseVisualStyleBackColor = true;
+            this.buttonBot.Click += new System.EventHandler(this.buttonBot_Click);
+            // 
+            // textBoxIpAddress
+            // 
+            this.textBoxIpAddress.Location = new System.Drawing.Point(149, 479);
+            this.textBoxIpAddress.Name = "textBoxIpAddress";
+            this.textBoxIpAddress.Size = new System.Drawing.Size(100, 22);
+            this.textBoxIpAddress.TabIndex = 13;
+            this.textBoxIpAddress.Text = "localhost";
             // 
             // fieldAlly
             // 
@@ -143,8 +175,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1692, 493);
-            this.Controls.Add(this.fieldEnemyAlly);
+            this.ClientSize = new System.Drawing.Size(1185, 520);
+            this.Controls.Add(this.textBoxIpAddress);
+            this.Controls.Add(this.buttonBot);
+            this.Controls.Add(this.buttonCreate);
+            this.Controls.Add(this.buttonConnect);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.fieldAlly);
             this.Controls.Add(this.fieldEnemy);
@@ -172,7 +207,10 @@
         private Field fieldEnemy;
         private Field fieldAlly;
         private System.Windows.Forms.Label label2;
-        private Field fieldEnemyAlly;
+        private System.Windows.Forms.Button buttonConnect;
+        private System.Windows.Forms.Button buttonCreate;
+        private System.Windows.Forms.Button buttonBot;
+        private System.Windows.Forms.TextBox textBoxIpAddress;
     }
 }
 

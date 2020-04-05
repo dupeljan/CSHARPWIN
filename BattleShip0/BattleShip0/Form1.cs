@@ -44,6 +44,14 @@ namespace BattleShip0
         enemy
     }
 
+    enum GameMode
+    {
+        default_,
+        bot,
+        client,
+        server
+    }
+
     public partial class Form1 : Form
     {
 
@@ -51,14 +59,15 @@ namespace BattleShip0
 
         ProgramState programState; // Program state
         GameState gameState; // Game state
-        OtherPlayer otherPlayer; // Other player pointer
+        OtherPlayer  otherPlayer; // Players pointers
         Size fieldSize = new Size(10,10); // Fied size
-       
+        GameMode gameMode;    // Game mode
         public Form1()
         {
             InitializeComponent();
             KeyPreview = true;
             setProgramState(ProgramState.end);
+            gameMode = GameMode.default_;
         }
 
 
@@ -90,10 +99,33 @@ namespace BattleShip0
             buttonChangeGameState.Text = "Try again";
             buttonReset.Visible = false;
             buttonFillRandom.Visible = false;
-            gameState = GameState.WaitPlayerChoise;
-            // Field for bot
-            fieldEnemyAlly.Init(fieldSize, Player.ally, true);
-            otherPlayer = new Bot(Level.easy, fieldEnemyAlly, this);
+
+            // Init other player
+            if (gameMode == GameMode.default_)
+                gameMode = GameMode.bot;
+            if (gameMode == GameMode.bot)
+            {
+                // Field for bot
+                var fieldEnemyAlly = new Field();
+                fieldEnemyAlly.Init(fieldSize, Player.ally, true);
+                otherPlayer = new Bot(Level.easy, fieldEnemyAlly, this);
+                setGameState(GameState.WaitPlayerChoise);
+
+            }
+            else if(gameMode == GameMode.server)
+            {
+                otherPlayer = new Server(this);
+                // Server is first player
+                setGameState(GameState.WaitPlayerChoise);
+
+            }
+            else if(gameMode == GameMode.client)
+            {
+                otherPlayer = new Client(textBoxIpAddress.Text,this);
+                setGameState(GameState.WaitOtherPlayerPos);
+            }
+
+
         }
 
         void setProgramState(ProgramState state)
@@ -102,18 +134,19 @@ namespace BattleShip0
             if (state == ProgramState.init)
             {
                 InitProgramm();
+                programState = state;
             }
             else if (state == ProgramState.end)
             {
                 EndGame();
+                programState = state;
             }
             else if (state == ProgramState.game && ShipButton.GetShipsLeft() == 0)
             {
 
                 BeginGame();
+                programState = state;
             }
-            programState = state;
-
 
         }
 
@@ -192,10 +225,7 @@ namespace BattleShip0
 
         // Game part
 
-        void UpdateField(Player player, Point pos,FieldButtonState state)
-        {
-            
-        }
+     
         void setGameState(GameState state)
         {
             gameState = state;
@@ -208,7 +238,7 @@ namespace BattleShip0
 
         public void SendPos(Point pos)
         {
-            if (gameState == GameState.WaitPlayerChoise)
+            if (gameState == GameState.WaitPlayerChoise && programState == ProgramState.game)
             {
                 lastShotPos = pos;
                 otherPlayer.RecevePos(pos);
@@ -218,7 +248,7 @@ namespace BattleShip0
 
         public void ReceveStatus(ShotStatus shotStatus)
         {
-            if(gameState == GameState.WaitOtherPlayerStatus)
+            if(gameState == GameState.WaitOtherPlayerStatus && programState == ProgramState.game)
             {
                 
                 // View shot on field
@@ -241,11 +271,12 @@ namespace BattleShip0
 
         public void RecevePos(Point pos)
         {
-            if(gameState == GameState.WaitOtherPlayerPos)
+            if(gameState == GameState.WaitOtherPlayerPos && programState == ProgramState.game)
             {
                 // Handl pos here
                 // compute status
                 var status = fieldAlly.Shot(pos);
+                // Send status
                 otherPlayer.ReceveStatus(status);
                 if (status == ShotStatus.miss)
                     setGameState(GameState.WaitPlayerChoise);
@@ -257,6 +288,21 @@ namespace BattleShip0
                  else
                     setGameState(GameState.WaitOtherPlayerPos);
             }
+        }
+
+        private void buttonConnect_Click(object sender, EventArgs e)
+        {
+            gameMode = GameMode.client;
+        }
+
+        private void buttonCreate_Click(object sender, EventArgs e)
+        {
+            gameMode = GameMode.server;
+        }
+
+        private void buttonBot_Click(object sender, EventArgs e)
+        {
+            gameMode = GameMode.bot;
         }
     }
 }

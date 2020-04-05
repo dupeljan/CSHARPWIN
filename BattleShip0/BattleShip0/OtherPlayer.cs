@@ -11,7 +11,6 @@ namespace BattleShip0
     {
         // Receve pos and send status to arbitor
         void RecevePos(Point pos);
-        
         void ReceveStatus(ShotStatus shotStatus);
         void SendPos();
         void SendStatus();
