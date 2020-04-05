@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+using System.Data;
 
 
 
@@ -21,6 +22,11 @@ namespace BattleShip0
         commit = 5
     }
 
+    enum FieldMode
+    {
+        filled,
+
+    }
 
  
     class Field : GroupBox
@@ -36,13 +42,13 @@ namespace BattleShip0
            
         }
 
-        public void Init(Size size,Player player) 
+        public void Init(Size size,Player player,bool autoFill = false) 
         {
             this.size = size;
             this.player = player;
             GameInit.setField(this, size, player);
             ships = new List<Ship>();
-            if (player == Player.enemy)
+            if (autoFill)
               RandomPutShip();
         }
         
@@ -296,6 +302,10 @@ namespace BattleShip0
         // Return status of shot
         public ShotStatus Shot(Point pos)
         {
+            if (player == Player.enemy)
+            {
+                throw new ConstraintException("Can't take a shot on the enemy field");
+            }
             var button = getFB(pos);
 
             ShotStatus status = ShotStatus.miss;
@@ -326,6 +336,7 @@ namespace BattleShip0
                 status = ShotStatus.miss;
 
             // Change FieldButton state
+
             var FieldButton = getFB(pos);
             FieldButtonState state;
             switch(status){
@@ -350,6 +361,28 @@ namespace BattleShip0
 
             return status;
             
+        }
+
+        // Visualize shot on enemy field
+        public void Shot(Point pos,ShotStatus shotStatus)
+        {
+            if (player == Player.ally)
+            {
+                throw new ConstraintException("Can't view a shot on the ally field");
+            }
+            FieldButtonState state;
+            if (shotStatus == ShotStatus.miss)
+                state = FieldButtonState.miss;
+            else if (shotStatus == ShotStatus.hurt)
+                state = FieldButtonState.hit;
+            else if (shotStatus == ShotStatus.kill)
+                state = FieldButtonState.kill;
+            else if (shotStatus == ShotStatus.killEverybody)
+                state = FieldButtonState.kill;
+            else
+                state = FieldButtonState.blocked;
+            getFB(pos).setState(state);
+
         }
         public void FieldButtonClicked(FieldButton button)
         {

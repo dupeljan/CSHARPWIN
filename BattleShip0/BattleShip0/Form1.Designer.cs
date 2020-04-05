@@ -35,6 +35,7 @@
             this.buttonReset = new System.Windows.Forms.Button();
             this.buttonFillRandom = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.fieldEnemyAlly = new BattleShip0.Field();
             this.fieldAlly = new BattleShip0.Field();
             this.fieldEnemy = new BattleShip0.Field();
             this.SuspendLayout();
@@ -111,6 +112,15 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "ButtleShip!";
             // 
+            // fieldEnemyAlly
+            // 
+            this.fieldEnemyAlly.Location = new System.Drawing.Point(1159, 48);
+            this.fieldEnemyAlly.Name = "fieldEnemyAlly";
+            this.fieldEnemyAlly.Size = new System.Drawing.Size(292, 222);
+            this.fieldEnemyAlly.TabIndex = 10;
+            this.fieldEnemyAlly.TabStop = false;
+            this.fieldEnemyAlly.Text = "Ally field";
+            // 
             // fieldAlly
             // 
             this.fieldAlly.Location = new System.Drawing.Point(464, 48);
@@ -133,7 +143,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1173, 493);
+            this.ClientSize = new System.Drawing.Size(1692, 493);
+            this.Controls.Add(this.fieldEnemyAlly);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.fieldAlly);
             this.Controls.Add(this.fieldEnemy);
@@ -161,6 +172,7 @@
         private Field fieldEnemy;
         private Field fieldAlly;
         private System.Windows.Forms.Label label2;
+        private Field fieldEnemyAlly;
     }
 }
 

@@ -46,7 +46,8 @@ namespace BattleShip0
 
     public partial class Form1 : Form
     {
-       
+
+        Point lastShotPos; // Position of last shot on enemy field
 
         ProgramState programState; // Program state
         GameState gameState; // Game state
@@ -90,7 +91,9 @@ namespace BattleShip0
             buttonReset.Visible = false;
             buttonFillRandom.Visible = false;
             gameState = GameState.WaitPlayerChoise;
-            otherPlayer = new Bot(Level.easy, fieldEnemy, this);
+            // Field for bot
+            fieldEnemyAlly.Init(fieldSize, Player.ally, true);
+            otherPlayer = new Bot(Level.easy, fieldEnemyAlly, this);
         }
 
         void setProgramState(ProgramState state)
@@ -189,6 +192,10 @@ namespace BattleShip0
 
         // Game part
 
+        void UpdateField(Player player, Point pos,FieldButtonState state)
+        {
+            
+        }
         void setGameState(GameState state)
         {
             gameState = state;
@@ -198,10 +205,12 @@ namespace BattleShip0
                 otherPlayer.SendStatus();
             
         }
+
         public void SendPos(Point pos)
         {
             if (gameState == GameState.WaitPlayerChoise)
             {
+                lastShotPos = pos;
                 otherPlayer.RecevePos(pos);
                 setGameState(GameState.WaitOtherPlayerStatus);
             }
@@ -213,6 +222,9 @@ namespace BattleShip0
             {
                 // handle shot status here
                 MessageBox.Show(shotStatus.ToString());
+                // View shot on field
+                fieldEnemy.Shot(lastShotPos, shotStatus);
+
                 if (shotStatus == ShotStatus.miss)
                     setGameState(GameState.WaitOtherPlayerPos);
                 else if (shotStatus == ShotStatus.killEverybody)

@@ -81,6 +81,12 @@ namespace BattleShip0
 
         protected override void OnClick(EventArgs e)
         {
+            // If field already clicled
+            if (state == FieldButtonState.kill ||
+                state == FieldButtonState.miss ||
+                state == FieldButtonState.hit)
+                return;
+
             (Parent as Field).FieldButtonClicked(this);
         }
     }

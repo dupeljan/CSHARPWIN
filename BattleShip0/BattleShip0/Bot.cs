@@ -62,7 +62,7 @@ namespace BattleShip0
 
         public void ReceveStatus(ShotStatus status)
         {
-            MessageBox.Show("Other player receve "+ status.ToString());
+            MessageBox.Show("Other player send "+ status.ToString());
         }
 
 }
