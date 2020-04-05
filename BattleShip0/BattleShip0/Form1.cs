@@ -143,9 +143,8 @@ namespace BattleShip0
             }
             else if (state == ProgramState.game && ShipButton.GetShipsLeft() == 0)
             {
-
-                BeginGame();
                 programState = state;
+                BeginGame();
             }
 
         }

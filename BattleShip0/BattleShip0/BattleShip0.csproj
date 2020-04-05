@@ -64,6 +64,7 @@
     <Compile Include="OtherPlayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemotePlayer.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ShipButton.cs">
       <SubType>Component</SubType>

@@ -9,14 +9,13 @@ using System.Threading.Tasks;
 
 namespace BattleShip0
 {
-    class Client : OtherPlayer
+    class Client : RemotePlayer
     {
-        Socket sender;
         Form1 arbitour;
 
-        public Client(String adress,Form1 arbitour)
+        public Client(String adress,Form1 arbitour) : base(arbitour)
         {
-            this.arbitour = arbitour;
+           
 
             try
             {
@@ -59,113 +58,6 @@ namespace BattleShip0
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-            }
-        }
-
-        public void Receve()
-        {
-            try
-            {
-                var bytes = new byte[1024];
-
-                // Receive the response from the remote device.    
-                int bytesRec = sender.Receive(bytes);
-                Console.WriteLine("Echoed test = {0}",
-                    Encoding.ASCII.GetString(bytes, 0, bytesRec));
-            }catch(Exception e)
-            {
-                Console.WriteLine(e.ToString());
-
-            }
-
-        }
-
-        public void Send(String data)
-        {
-            try
-            { 
-                // Encode the data string into a byte array.    
-                var msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
-
-                // Send the data through the socket.    
-                int bytesSent = sender.Send(msg);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-
-            }
-        }
-
-        public void Release()
-        {
-            try
-            { 
-                // Release the socket.    
-                sender.Shutdown(SocketShutdown.Both);
-                sender.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        }
-
-        public void RecevePos(Point pos)
-        {
-            var msg = Encoding.ASCII.GetBytes(pos.ToString() + Server.endSimbol);
-
-            // Send the data through the socket.    
-            int bytesSent = sender.Send(msg);
-        }
-
-        public void ReceveStatus(ShotStatus shotStatus)
-        {
-            var msg = Encoding.ASCII.GetBytes(shotStatus.ToString() + Server.endSimbol);
-
-            // Send the data through the socket.    
-            int bytesSent = sender.Send(msg);
-        }
-
-        public void SendPos()
-        {
-            try
-            {
-                var bytes = new byte[1024];
-
-                // Receive the response from the remote device.    
-                int bytesRec = sender.Receive(bytes);
-
-                var responce = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                var pos = new Point();
-                arbitour.RecevePos(pos);
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-
-            }
-        }
-
-        public void SendStatus()
-        {
-            try
-            {
-                var bytes = new byte[1024];
-
-                // Receive the response from the remote device.    
-                int bytesRec = sender.Receive(bytes);
-
-                var responce = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                
-                arbitour.ReceveStatus(ShotStatus.miss);
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-
             }
         }
 
